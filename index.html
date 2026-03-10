@@ -284,7 +284,7 @@ function Trivium() {
 
   var handleShare = function() {
     var tierInfo = getTierInfo(score);
-    var shareText = "I scored " + score + "/10 on frog Trivium â '" + tierInfo.title + "' ð¸ How well do you know frog? https://antocrimi.github.io/frogtrivium/";
+    var shareText = "I scored " + score + "/10 on frog Trivium. How well do you know frog? https://frogai.studio";
     if (navigator.share) {
       navigator.share({title:"frog Trivium",text:shareText});
     } else {
