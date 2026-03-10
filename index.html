@@ -243,6 +243,7 @@ function Trivium() {
   var _sel = useState(null), selected = _sel[0], setSelected = _sel[1];
   var _ans = useState([]), answers = _ans[0], setAnswers = _ans[1];
   var _fi = useState(true), fadeIn = _fi[0], setFadeIn = _fi[1];
+  var _cs = useState(false), copied = _cs[0], setCopied = _cs[1];
 
   var startGame = useCallback(function() {
     var picked = shuffle(QUESTIONS).slice(0, ROUND_SIZE);
@@ -251,6 +252,7 @@ function Trivium() {
       return {q:q.q, o:idx.map(function(i){return q.o[i]}), a:idx.indexOf(q.a), e:q.e};
     });
     setQuestions(shuffled); setCurrent(0); setScore(0); setSelected(null); setAnswers([]);
+    setAnimatedScore(0); setCopied(false);
     setFadeIn(false);
     setTimeout(function(){setScreen("playing"); setFadeIn(true);}, 200);
   }, []);
@@ -275,15 +277,102 @@ function Trivium() {
 
   var goHome = function() {
     setFadeIn(false);
+    setCopied(false);
+    setAnimatedScore(0);
     setTimeout(function(){setScreen("start"); setFadeIn(true);}, 200);
   };
 
-  var getVerdict = function(s) {
-    if (s === ROUND_SIZE) return "Flawless.";
-    if (s >= 8) return "Impressive.";
-    if (s >= 6) return "Well played.";
-    if (s >= 4) return "Room to grow.";
-    return "Study up.";
+  var handleShare = function() {
+    var tierInfo = getTierInfo(score);
+    var shareText = "I scored " + score + "/10 on frog Trivium â '" + tierInfo.title + "' ð¸ How well do you know frog? https://antocrimi.github.io/frogtrivium/";
+    if (navigator.share) {
+      navigator.share({title:"frog Trivium",text:shareText});
+    } else {
+      navigator.clipboard.writeText(shareText);
+      setCopied(true);
+      setTimeout(function(){setCopied(false);}, 2000);
+    }
+  };
+
+  var getTierInfo = function(s) {
+    if (s === 10) return {title:"Hartmut Would Be Proud",desc:"You know frog like Esslinger knows a BÃ©zier curve. From the Apple IIc to the NeXT cube â nothing escapes you.",icon:"trophy"};
+    if (s >= 8) return {title:"Snow White Laureate",desc:"You could've been in that '82 pitch room with Steve. The Snow White design language lives in your bones.",icon:"computer"};
+    if (s >= 6) return {title:"Design Thinker",desc:"From Lufthansa cockpits to Disney's MagicBand â you know your way around frog's five decades of shaping the world.",icon:"compass"};
+    if (s >= 4) return {title:"Creative Apprentice",desc:"Solid start. frog has shaped everything from the first Sony Walkman to Porsche interiors â time to dig deeper.",icon:"pencil"};
+    return {title:"The Journey Begins",desc:"Every great designer starts somewhere. frog has been transforming industries since 1969 â your exploration starts now.",icon:"arrow"};
+  };
+
+  var _as = useState(0), animatedScore = _as[0], setAnimatedScore = _as[1];
+  useEffect(function() {
+    if (screen !== "results") return;
+    var interval = setInterval(function() {
+      setAnimatedScore(function(s) { return s >= score ? score : s + 1; });
+    }, 180);
+    return function() { clearInterval(interval); };
+  }, [screen, score]);
+
+  var renderTierIcon = function(iconType) {
+    var svgProps = {viewBox:"0 0 120 120",xmlns:"http://www.w3.org/2000/svg",style:{width:"140px",height:"140px",display:"block",margin:"0 auto"}};
+    var stk = {fill:"none",stroke:"rgba(255,255,255,0.85)",strokeWidth:"1.5",strokeLinecap:"round",strokeLinejoin:"round"};
+    var dot = function(cx,cy,r){return _h("circle",{cx:String(cx),cy:String(cy),r:String(r||2.5),fill:"rgba(255,255,255,0.5)"})};
+    // 10/10 â Trophy/Star: a five-pointed star inscribed in concentric circles with radiant lines
+    if (iconType === "trophy") {
+      return _h("svg", svgProps,
+        _h("circle", Object.assign({cx:"60",cy:"60",r:"56"},stk,{strokeWidth:"1",stroke:"rgba(255,255,255,0.25)"})),
+        _h("circle", Object.assign({cx:"60",cy:"60",r:"42"},stk,{strokeWidth:"1.5"})),
+        _h("polygon", Object.assign({points:"60,18 68,45 97,45 74,62 82,90 60,74 38,90 46,62 23,45 52,45"},stk)),
+        _h("line", Object.assign({x1:"60",y1:"4",x2:"60",y2:"18"},stk,{strokeWidth:"1",stroke:"rgba(255,255,255,0.4)"})),
+        _h("line", Object.assign({x1:"60",y1:"102",x2:"60",y2:"116"},stk,{strokeWidth:"1",stroke:"rgba(255,255,255,0.4)"})),
+        _h("line", Object.assign({x1:"4",y1:"60",x2:"18",y2:"60"},stk,{strokeWidth:"1",stroke:"rgba(255,255,255,0.4)"})),
+        _h("line", Object.assign({x1:"102",y1:"60",x2:"116",y2:"60"},stk,{strokeWidth:"1",stroke:"rgba(255,255,255,0.4)"})),
+        dot(60,18), dot(97,45), dot(82,90), dot(38,90), dot(23,45));
+    // 8-9 â Mac SE: stylized Macintosh with screen, floppy slot, rounded rect
+    } else if (iconType === "computer") {
+      return _h("svg", svgProps,
+        _h("rect", Object.assign({x:"30",y:"14",width:"60",height:"78",rx:"4"},stk)),
+        _h("rect", Object.assign({x:"38",y:"22",width:"44",height:"36",rx:"2"},stk)),
+        _h("line", Object.assign({x1:"38",y1:"66",x2:"82",y2:"66"},stk,{strokeWidth:"1",stroke:"rgba(255,255,255,0.3)"})),
+        _h("rect", Object.assign({x:"50",y:"72",width:"20",height:"4",rx:"1"},stk,{strokeWidth:"1"})),
+        _h("line", Object.assign({x1:"42",y1:"98",x2:"78",y2:"98"},stk)),
+        _h("line", Object.assign({x1:"52",y1:"92",x2:"68",y2:"92"},stk,{strokeWidth:"1",stroke:"rgba(255,255,255,0.4)"})),
+        _h("circle", Object.assign({cx:"60",cy:"46",r:"8"},stk,{strokeWidth:"1",stroke:"rgba(255,255,255,0.3)"})),
+        _h("path", Object.assign({d:"M 56 44 L 66 44"},stk,{strokeWidth:"1"})),
+        dot(30,14), dot(90,14), dot(90,92), dot(30,92));
+    // 6-7 â Mickey/MagicBand: three overlapping circles (Mickey silhouette) with a band arc
+    } else if (iconType === "compass") {
+      return _h("svg", svgProps,
+        _h("circle", Object.assign({cx:"60",cy:"62",r:"24"},stk)),
+        _h("circle", Object.assign({cx:"42",cy:"36",r:"16"},stk)),
+        _h("circle", Object.assign({cx:"78",cy:"36",r:"16"},stk)),
+        _h("path", Object.assign({d:"M 20 95 Q 60 110 100 95"},stk,{strokeWidth:"1.5",stroke:"rgba(255,255,255,0.5)"})),
+        _h("path", Object.assign({d:"M 20 100 Q 60 115 100 100"},stk,{strokeWidth:"1",stroke:"rgba(255,255,255,0.25)"})),
+        _h("line", Object.assign({x1:"48",y1:"56",x2:"48",y2:"68"},stk,{strokeWidth:"1",stroke:"rgba(255,255,255,0.3)"})),
+        _h("line", Object.assign({x1:"72",y1:"56",x2:"72",y2:"68"},stk,{strokeWidth:"1",stroke:"rgba(255,255,255,0.3)"})),
+        dot(42,20), dot(78,20), dot(60,86), dot(20,95), dot(100,95));
+    // 4-5 â Walkman: rectangular device with circular controls, cassette window, headphone arc
+    } else if (iconType === "pencil") {
+      return _h("svg", svgProps,
+        _h("rect", Object.assign({x:"34",y:"28",width:"52",height:"72",rx:"6"},stk)),
+        _h("rect", Object.assign({x:"44",y:"36",width:"32",height:"18",rx:"2"},stk,{strokeWidth:"1"})),
+        _h("circle", Object.assign({cx:"50",cy:"45",r:"4"},stk,{strokeWidth:"1"})),
+        _h("circle", Object.assign({cx:"70",cy:"45",r:"4"},stk,{strokeWidth:"1"})),
+        _h("line", Object.assign({x1:"54",y1:"45",x2:"66",y2:"45"},stk,{strokeWidth:"0.8",stroke:"rgba(255,255,255,0.3)"})),
+        _h("circle", Object.assign({cx:"60",cy:"76",r:"14"},stk)),
+        _h("circle", Object.assign({cx:"60",cy:"76",r:"5"},stk,{strokeWidth:"1"})),
+        _h("path", Object.assign({d:"M 30 18 Q 30 6 42 6 L 50 6"},stk,{strokeWidth:"1.5",stroke:"rgba(255,255,255,0.6)"})),
+        _h("path", Object.assign({d:"M 90 18 Q 90 6 78 6 L 70 6"},stk,{strokeWidth:"1.5",stroke:"rgba(255,255,255,0.6)"})),
+        dot(34,28), dot(86,28), dot(86,100), dot(34,100));
+    // 0-3 â Journey/Path: diagonal arrow ascending through geometric frames
+    } else if (iconType === "arrow") {
+      return _h("svg", svgProps,
+        _h("rect", Object.assign({x:"12",y:"12",width:"96",height:"96",rx:"0"},stk,{strokeWidth:"1",stroke:"rgba(255,255,255,0.2)"})),
+        _h("rect", Object.assign({x:"28",y:"28",width:"64",height:"64",rx:"0",transform:"rotate(15 60 60)"},stk,{strokeWidth:"1",stroke:"rgba(255,255,255,0.3)"})),
+        _h("line", Object.assign({x1:"30",y1:"90",x2:"90",y2:"30"},stk)),
+        _h("polyline", Object.assign({points:"76,30 90,30 90,44"},stk)),
+        _h("path", Object.assign({d:"M 20 100 Q 40 70 60 60 Q 80 50 100 20"},stk,{strokeWidth:"1",stroke:"rgba(255,255,255,0.25)"})),
+        dot(12,12), dot(108,12), dot(108,108), dot(12,108), dot(90,30));
+    }
+    return null;
   };
 
   var hover = function(e){e.target.style.opacity="0.85"};
@@ -305,7 +394,7 @@ function Trivium() {
         _h("h1", {style:Object.assign({},S.hd,{fontSize:"clamp(48px, 10vw, 96px)",margin:"0 0 16px"})},
           _h("span", {style:{fontStyle:"italic"}}, "Trivium")),
         _h("p", {style:Object.assign({},S.body,{opacity:0.6,marginBottom:"48px",maxWidth:"400px",marginLeft:"auto",marginRight:"auto"})},
-          "Ten questions. One legendary design company. How well do you know frog?"),
+          "Ten questions. One legendary design company.",_h("br"),_h("br"),"How well do you know frog?"),
         _h("button", {style:S.btnP,onClick:startGame,onMouseEnter:hover,onMouseLeave:unhover}, "Begin")),
       // QUESTION
       screen === "playing" && questions[current] && _h("div", {style:Object.assign({},S.card,{marginTop:"64px"})},
@@ -337,11 +426,33 @@ function Trivium() {
             current+1 < ROUND_SIZE ? "Continue" : "See results"))),
       // RESULTS
       screen === "results" && _h("div", {style:{maxWidth:"680px",width:"100%",marginTop:"64px"}},
+        // Hero section
         _h("div", {style:{textAlign:"center",marginBottom:"48px"}},
-          _h("div", {style:Object.assign({},S.label,{marginBottom:"16px"})}, "Final score"),
-          _h("h1", {style:Object.assign({},S.hd,{fontSize:"clamp(64px, 15vw, 120px)",margin:"0",lineHeight:"1"})},
-            score, _h("span", {style:{fontSize:"0.4em",opacity:0.4}}, "/"+ROUND_SIZE)),
-          _h("div", {style:Object.assign({},S.hd,{fontSize:"24px",fontStyle:"italic",marginTop:"8px",opacity:0.7})}, getVerdict(score))),
+          _h("div", {style:Object.assign({},S.label,{marginBottom:"32px"})}, "Final score"),
+          // Icon
+          _h("div", {style:{marginBottom:"16px",opacity:animatedScore>=score?1:0.3,transition:"opacity 0.6s ease"}},
+            renderTierIcon(getTierInfo(score).icon)),
+          // Score
+          _h("div", {style:{display:"flex",alignItems:"baseline",justifyContent:"center",gap:"4px"}},
+            _h("span", {style:Object.assign({},S.hd,{fontSize:"clamp(72px, 18vw, 140px)",lineHeight:"1",fontWeight:"normal"})}, animatedScore),
+            _h("span", {style:Object.assign({},S.hd,{fontSize:"clamp(28px, 6vw, 48px)",opacity:0.3,fontWeight:"normal"})}, "/"+ROUND_SIZE)),
+          // Tier title with fade-in
+          _h("h2", {style:Object.assign({},S.hd,{fontSize:"clamp(24px, 5vw, 36px)",fontStyle:"italic",marginTop:"20px",marginBottom:"16px",
+            opacity:animatedScore>=score?1:0,transform:animatedScore>=score?"translateY(0)":"translateY(12px)",transition:"opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s"})},
+            getTierInfo(score).title),
+          // Description with fade-in
+          _h("p", {style:Object.assign({},S.body,{opacity:animatedScore>=score?0.7:0,maxWidth:"480px",marginLeft:"auto",marginRight:"auto",lineHeight:"1.7",
+            transform:animatedScore>=score?"translateY(0)":"translateY(12px)",transition:"opacity 0.5s ease 0.4s, transform 0.5s ease 0.4s"})},
+            getTierInfo(score).desc),
+          // Share button with fade-in
+          _h("div", {style:{marginTop:"36px",opacity:animatedScore>=score?1:0,transition:"opacity 0.5s ease 0.6s"}},
+            _h("button", {style:Object.assign({},S.btnS,{display:"inline-flex",alignItems:"center",gap:"10px",padding:"14px 36px"}),onClick:handleShare,onMouseEnter:hover,onMouseLeave:unhover},
+              _h("svg", {viewBox:"0 0 20 20",style:{width:"16px",height:"16px"},fill:"none",stroke:"currentColor",strokeWidth:"1.8",strokeLinecap:"round",strokeLinejoin:"round"},
+                _h("path", {d:"M15 7l-5-5-5 5"}),
+                _h("line", {x1:"10",y1:"2",x2:"10",y2:"14"}),
+                _h("path", {d:"M3 12v4a2 2 0 002 2h10a2 2 0 002-2v-4"})),
+              copied ? "Copied to clipboard!" : "Share result"))),
+        // Breakdown card
         _h("div", {style:Object.assign({},S.card,{padding:"32px",marginBottom:"32px"})},
           _h("div", {style:Object.assign({},S.label,{marginBottom:"20px"})}, "Breakdown"),
           answers.map(function(a, i) {
@@ -351,13 +462,14 @@ function Trivium() {
                 _h("div", {style:Object.assign({},S.body,{fontSize:"15px",marginBottom:"4px"})}, a.question.q),
                 !a.correct && _h("div", {style:{fontSize:"13px",opacity:0.5}}, "Answer: " + a.question.o[a.question.a])));
           })),
+        // Action buttons
         _h("div", {style:{display:"flex",gap:"16px",justifyContent:"center",paddingBottom:"48px"}},
           _h("button", {style:S.btnP,onClick:startGame,onMouseEnter:hover,onMouseLeave:unhover}, "Play again"),
           _h("button", {style:S.btnS,onClick:goHome,onMouseEnter:function(e){e.target.style.opacity="0.7"},onMouseLeave:unhover}, "Home"))))
   );
 }
 
-// ─── PASSWORD GATE ──────────────────────────────────────────────────────────
+// âââ PASSWORD GATE ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 // Simple hash so the password isn't plain text in source
 function simpleHash(s){var h=0;for(var i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return h;}
 var PASS_HASH = -1175806755; // hash of the password
