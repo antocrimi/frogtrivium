@@ -356,5 +356,61 @@ function Trivium() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(_h(Trivium));
+// ─── PASSWORD GATE ──────────────────────────────────────────────────────────
+// Simple hash so the password isn't plain text in source
+function simpleHash(s){var h=0;for(var i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return h;}
+var PASS_HASH = -1175806755; // hash of the password
+
+function PasswordGate() {
+  var _a = useState(false), authed = _a[0], setAuthed = _a[1];
+  var _p = useState(""), pw = _p[0], setPw = _p[1];
+  var _e = useState(false), err = _e[0], setErr = _e[1];
+
+  // Check sessionStorage so user doesn't re-enter on refresh
+  useEffect(function(){
+    if(sessionStorage.getItem("trivium_auth")==="1") setAuthed(true);
+  },[]);
+
+  if(authed) return _h(Trivium);
+
+  function submit(e){
+    e.preventDefault();
+    if(simpleHash(pw)===PASS_HASH){
+      sessionStorage.setItem("trivium_auth","1");
+      setAuthed(true);
+    } else {
+      setErr(true);
+      setPw("");
+    }
+  }
+
+  return _h("div",null,
+    _h(AuroraBackground),
+    _h("div",{style:S.page},
+      _h("div",{style:Object.assign({},S.nav)},
+        _h("span",{style:S.navLogo},"frog"),
+        _h("span",{style:S.navLabel},"trivium")),
+      _h("form",{onSubmit:submit,style:Object.assign({},S.card,{textAlign:"center",marginTop:"80px"})},
+        _h("h1",{style:Object.assign({},S.hd,{fontSize:"36px",marginBottom:"16px"})},"Enter Password"),
+        _h("p",{style:Object.assign({},S.body,{opacity:0.6,marginBottom:"32px"})},
+          "This game is password protected."),
+        _h("input",{
+          type:"password",
+          value:pw,
+          onChange:function(e){setPw(e.target.value);setErr(false);},
+          placeholder:"Password",
+          autoFocus:true,
+          style:{
+            fontFamily:sans,fontSize:"16px",padding:"14px 20px",width:"100%",maxWidth:"320px",
+            background:"rgba(255,255,255,0.08)",border:err?"1px solid #D12966":"1px solid rgba(255,255,255,0.2)",
+            borderRadius:"0",color:"#fff",outline:"none",marginBottom:"8px",
+            textAlign:"center",letterSpacing:"2px"
+          }
+        }),
+        err && _h("p",{style:{color:"#D12966",fontSize:"13px",marginBottom:"16px"}},"Incorrect password"),
+        !err && _h("div",{style:{height:"29px"}}),
+        _h("button",{type:"submit",style:Object.assign({},S.btnP,{marginTop:"8px"})},"Enter"))));
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(_h(PasswordGate));
 </script></body></html>
