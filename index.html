@@ -394,7 +394,7 @@ function Trivium() {
         _h("h1", {style:Object.assign({},S.hd,{fontSize:"clamp(48px, 10vw, 96px)",margin:"0 0 16px"})},
           _h("span", {style:{fontStyle:"italic"}}, "Trivium")),
         _h("p", {style:Object.assign({},S.body,{opacity:0.6,marginBottom:"48px",maxWidth:"400px",marginLeft:"auto",marginRight:"auto"})},
-          "Ten questions. One legendary design company.",_h("br"),_h("br"),"How well do you know frog?"),
+          "Ten questions. One legendary design company.",_h("br"),"How well do you know frog?"),
         _h("button", {style:S.btnP,onClick:startGame,onMouseEnter:hover,onMouseLeave:unhover}, "Begin")),
       // QUESTION
       screen === "playing" && questions[current] && _h("div", {style:Object.assign({},S.card,{marginTop:"64px"})},
