@@ -494,18 +494,18 @@ const s = {
   // Cards
   card: { backdropFilter: "blur(40px)", WebkitBackdropFilter: "blur(40px)", background: "rgba(0,0,0,0.50)", border: "1px solid rgba(255,255,255,0.08)", padding: "48px", maxWidth: "680px", width: "100%" },
   // Buttons
-  btnPrimary: { fontFamily: sans, fontSize: "14px", fontWeight: "500", textTransform: "uppercase", letterSpacing: "2.8px", padding: "16px 48px", background: "#fff", color: "#000", border: "none", borderRadius: "0", cursor: "pointer", transition: "opacity 0.2s" },
-  btnSecondary: { fontFamily: sans, fontSize: "14px", fontWeight: "500", textTransform: "uppercase", letterSpacing: "2.8px", padding: "16px 48px", background: "transparent", color: "#fff", border: "1px solid rgba(255,255,255,0.3)", borderRadius: "0", cursor: "pointer", transition: "opacity 0.2s" },
+  btnPrimary: { fontFamily: sans, fontSize: "15px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "3px", padding: "20px 56px", background: "#fff", color: "#000", border: "none", borderRadius: "0", cursor: "pointer", transition: "all 0.2s ease" },
+  btnSecondary: { fontFamily: sans, fontSize: "15px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "3px", padding: "20px 56px", background: "transparent", color: "#fff", border: "1px solid rgba(255,255,255,0.5)", borderRadius: "0", cursor: "pointer", transition: "all 0.2s ease" },
   // Typography
   heading: { fontFamily: serif, fontWeight: "normal", letterSpacing: "-0.02em" },
   body: { fontFamily: sans, fontSize: "16px", fontWeight: "400", lineHeight: "1.6" },
   label: { fontFamily: sans, fontSize: "12px", fontWeight: "500", textTransform: "uppercase", letterSpacing: "2.8px", opacity: 0.5 },
   // Progress
-  progressBar: { height: "2px", background: "rgba(255,255,255,0.1)", width: "100%", marginBottom: "32px" },
+  progressBar: { height: "4px", background: "rgba(255,255,255,0.08)", width: "calc(100% + 96px)", marginLeft: "-48px", marginTop: "-48px", marginBottom: "32px" },
   progressFill: { height: "100%", background: "#fff", transition: "width 0.4s ease" },
   // Option rows
   optionRow: { display: "flex", alignItems: "baseline", gap: "20px", padding: "20px 0", borderBottom: "1px solid rgba(255,255,255,0.12)", cursor: "pointer", transition: "opacity 0.15s" },
-  optionLetter: { fontFamily: serif, fontSize: "20px", fontStyle: "italic", opacity: 0.4, flexShrink: 0, width: "24px" },
+  optionLetter: { fontFamily: serif, fontSize: "20px", fontStyle: "normal", opacity: 0.5, flexShrink: 0, width: "24px" },
   optionText: { fontFamily: sans, fontSize: "17px", fontWeight: "400", lineHeight: "1.5" },
   // Score chip
   chip: { backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", background: "rgba(0,0,0,0.45)", padding: "8px 16px", fontSize: "13px", fontFamily: sans, fontWeight: "500", letterSpacing: "1px", textTransform: "uppercase" },
@@ -569,7 +569,7 @@ export default function Trivium() {
     setTimeout(() => { setScreen("start"); setFadeIn(true); }, 200);
   }, []);
 
-  const letters = ["a", "b", "c", "d"];
+  const letters = ["1", "2", "3", "4"];
 
   const getVerdict = (s) => {
     if (s === ROUND_SIZE) return "Flawless.";
@@ -584,8 +584,8 @@ export default function Trivium() {
       <style>{fontCSS}</style>
       <AuroraBackground />
 
-      {/* Nav */}
-      <div style={s.nav}>
+      {/* Nav — only during questions */}
+      {screen === "playing" && <div style={s.nav}>
         <div style={{ display: "flex", alignItems: "baseline", gap: "12px" }}>
           <span style={s.navLogo}>frog</span>
           <span style={{ ...s.navLabel, fontSize: "10px" }}>trivium</span>
@@ -593,7 +593,7 @@ export default function Trivium() {
         {screen === "playing" && (
           <div style={s.chip}>{score} / {ROUND_SIZE}</div>
         )}
-      </div>
+      </div>}
 
       {/* Content */}
       <div style={{ ...s.page, opacity: fadeIn ? 1 : 0, transition: "opacity 0.2s ease" }}>
@@ -602,8 +602,8 @@ export default function Trivium() {
         {screen === "start" && (
           <div style={{ textAlign: "center", maxWidth: "600px" }}>
             <div style={{ ...s.label, marginBottom: "24px" }}>A frog knowledge game</div>
-            <h1 style={{ ...s.heading, fontSize: "clamp(48px, 10vw, 96px)", margin: "0 0 16px" }}>
-              <span style={{ fontStyle: "italic" }}>Trivium</span>
+            <h1 style={{ ...s.heading, fontSize: "clamp(72px, 16vw, 140px)", margin: "0 0 16px" }}>
+              <span style={{ fontStyle: "italic" }}>frog</span>{" "}<span style={{ fontStyle: "italic" }}>Trivium</span>
             </h1>
             <p style={{ ...s.body, opacity: 0.6, marginBottom: "48px", maxWidth: "400px", marginLeft: "auto", marginRight: "auto" }}>
               Ten questions. One legendary design company. How well do you know frog?
@@ -631,7 +631,7 @@ export default function Trivium() {
             </div>
 
             {/* Question */}
-            <h2 style={{ ...s.heading, fontSize: "clamp(22px, 4vw, 32px)", margin: "0 0 32px", lineHeight: "1.3" }}>
+            <h2 style={{ ...s.heading, fontSize: "clamp(24px, 5vw, 36px)", margin: "0 0 32px", lineHeight: "1.3" }}>
               {questions[current].question}
             </h2>
 
