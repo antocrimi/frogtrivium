@@ -402,6 +402,7 @@ function AuroraBackground() {
     <div style={{ position: "fixed", inset: 0, zIndex: 0, overflow: "hidden", backgroundColor: "#000" }}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
+        colorInterpolation="sRGB"
         xmlnsXlink="http://www.w3.org/1999/xlink"
         viewBox="0 0 1268 695"
         preserveAspectRatio="xMidYMid slice"
