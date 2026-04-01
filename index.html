@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#0d0810" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#0d0810">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>frogTrivium — A frog Knowledge Game</title>
 <meta name="description" content="Test your knowledge about frog, the legendary design company. 60 trivia questions spanning founding, Apple, landmark projects, and design philosophy.">
@@ -33,7 +34,24 @@
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow-x: hidden; }
-body { background: #0d0810; color: #fff; font-family: "GT America", -apple-system, "Helvetica Neue", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body {
+  background:
+    radial-gradient(ellipse 130% 55% at 70% 15%, #D86870 0%, #B84878 38%, transparent 65%),
+    radial-gradient(ellipse 115% 75% at 22% 92%, #242264 0%, #3434A0 32%, transparent 65%),
+    #0d0810;
+  color: #fff;
+  font-family: "GT America", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+@media (min-width: 769px) {
+  body {
+    background:
+      radial-gradient(ellipse 95% 85% at 74% 12%, #E87878 0%, #C85080 40%, transparent 68%),
+      radial-gradient(ellipse 62% 68% at 90% 80%, #B84080 0%, transparent 50%),
+      radial-gradient(ellipse 72% 62% at 7% 93%, #242264 0%, transparent 58%),
+      #0d0810;
+  }
+}
 #root { min-height: 100vh; }
 </style>
 </head>
