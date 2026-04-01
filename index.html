@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>frogTrivium — A frog Knowledge Game</title>
 <meta name="description" content="Test your knowledge about frog, the legendary design company. 60 trivia questions spanning founding, Apple, landmark projects, and design philosophy.">
 <meta property="og:title" content="frogTrivium — A frog Knowledge Game">
@@ -142,7 +144,7 @@ function AuroraBackground() {
 // ─── STYLES ────────────────────────────────────────────────────────────────
 var S = {
   page:{position:"relative",zIndex:1,minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px",color:"#fff",fontFamily:sans},
-  nav:{position:"fixed",top:0,left:0,right:0,zIndex:100,display:"flex",alignItems:"center",justifyContent:"space-between",padding:"16px 32px",transition:"background 0.3s ease, border-color 0.3s ease"},
+  nav:{position:"fixed",top:0,left:0,right:0,zIndex:100,display:"flex",alignItems:"center",justifyContent:"space-between",padding:"16px 32px",paddingTop:"max(16px, env(safe-area-inset-top, 16px))",backdropFilter:"blur(48px) saturate(1.6) brightness(0.85)",WebkitBackdropFilter:"blur(48px) saturate(1.6) brightness(0.85)",background:"rgba(8,6,14,0.5)",borderBottom:"0.5px solid rgba(255,255,255,0.1)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,0.15)"},
   navLogo:{fontFamily:serif,fontSize:"28px",fontWeight:"normal",letterSpacing:"-0.02em"},
   navLabel:{fontFamily:sans,fontSize:"10px",fontWeight:"400",textTransform:"uppercase",letterSpacing:"2.8px",opacity:0.6},
   card:{position:"relative",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",background:"rgba(0,0,0,0.50)",border:"1px solid rgba(255,255,255,0.08)",padding:"48px",maxWidth:"680px",width:"100%"},
@@ -169,14 +171,8 @@ function Trivium() {
   var _ans = useState([]), answers = _ans[0], setAnswers = _ans[1];
   var _fi = useState(true), fadeIn = _fi[0], setFadeIn = _fi[1];
   var _cs = useState(false), copied = _cs[0], setCopied = _cs[1];
-  var _scr = useState(false), scrolled = _scr[0], setScrolled = _scr[1];
   var isMob = typeof window !== "undefined" && window.innerWidth <= 768;
   var winH = typeof window !== "undefined" ? window.innerHeight : 812;
-  useEffect(function() {
-    var onScroll = function() { setScrolled(window.scrollY > 10); };
-    document.addEventListener("scroll", onScroll, {passive:true});
-    return function() { document.removeEventListener("scroll", onScroll); };
-  }, []);
 
   var startGame = useCallback(function() {
     var picked = shuffle(QUESTIONS).slice(0, ROUND_SIZE);
@@ -316,7 +312,7 @@ function Trivium() {
   return _h(_F, null,
     _h(AuroraBackground),
     // Nav — hidden on start screen
-    screen !== "start" && _h("div", {style:Object.assign({},S.nav,scrolled?{backdropFilter:"blur(24px)",WebkitBackdropFilter:"blur(24px)",background:"rgba(0,0,0,0.6)",borderBottom:"1px solid rgba(255,255,255,0.08)"}:{})},
+    screen !== "start" && _h("div", {style:S.nav},
       _h("div", null,
         _h("span", {style:S.navLogo}, "frog"),
         _h("span", {style:Object.assign({},S.navLogo,{fontStyle:"italic"})}, "Trivium")),
@@ -325,7 +321,7 @@ function Trivium() {
     _h("div", {style:Object.assign({},S.page,{opacity:fadeIn?1:0,transition:"opacity 0.2s ease"})},
       // START
       screen === "start" && (isMob
-        ? _h("div", {style:{position:"fixed",inset:0,zIndex:2,display:"flex",flexDirection:"column",padding:"24px",paddingBottom:"max(24px, env(safe-area-inset-bottom, 24px))"}},
+        ? _h("div", {style:{position:"fixed",inset:0,zIndex:2,display:"flex",flexDirection:"column",padding:"24px",paddingTop:"max(24px, env(safe-area-inset-top, 24px))",paddingBottom:"max(24px, env(safe-area-inset-bottom, 24px))"}},
             _h("div", {style:{flex:"1",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",textAlign:"center"}},
               _h("div", {style:Object.assign({},S.label,{marginBottom:"24px"})}, "A frog knowledge game"),
               _h("h1", {style:Object.assign({},S.hd,{fontSize:"clamp(72px, 22vw, 96px)",margin:"0 0 20px",lineHeight:"1.0"})},
