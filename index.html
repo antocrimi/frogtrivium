@@ -8,6 +8,14 @@
 <meta property="og:title" content="frogTrivium — A frog Knowledge Game">
 <meta property="og:description" content="How well do you know frog? Ten questions. One legendary design company.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://www.frogai.studio/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://www.frogai.studio/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="frogTrivium — A frog Knowledge Game">
+<meta name="twitter:description" content="How well do you know frog? Ten questions. One legendary design company.">
+<meta name="twitter:image" content="https://www.frogai.studio/og-image.png">
 <style>
 @font-face {
   font-family: 'frogSerif';
@@ -122,13 +130,10 @@ var letters = ["a", "b", "c", "d"];
 // ─── AURORA BACKGROUND (faithful to reference SVG) ─────────────────────────
 // Exact layer stack from background.svg:
 //   1. Black fill
-//   2. Lighten group with matrix transform (61.69deg rotation + scaleY(-1))
-//     a. Black rect
-//     b. Texture image (pattern fill)
-//     c. Two large circles: color-dodge, r=543.983, blur stdDev=219.495,
-//        gradient #2976FB(0.6) → #D12966
-//     d. Flame path: blur stdDev=100.301, gradient #FA3D0E → #FBFF00, opacity 0.88
-//     e. Small circle: color-dodge, r=349.105, blur stdDev=219.495, same gradient
+//   2. All layers composited via a single SVG <filter> with colorInterpolationFilters="sRGB"
+//      (replaces CSS mix-blend-mode to enforce consistent sRGB blending across browsers)
+//     a. Black rect → b. Texture (normal) → c. Two large circles (feBlend color-dodge)
+//     d. Flame path (feBlend normal) → e. Small circle (feBlend color-dodge)
 function AuroraBackground() {
   // The reference SVG is 1268x695. We use viewBox to scale.
   return _h("div", {style:{position:"fixed",inset:0,zIndex:0,overflow:"hidden",backgroundColor:"#000"}},
@@ -141,74 +146,69 @@ function AuroraBackground() {
       style:{position:"absolute",width:"100%",height:"100%"}
     },
       _h("defs", null,
-        // Pattern for the texture image
         _h("pattern", {id:"texPat",patternContentUnits:"objectBoundingBox",width:"1",height:"1"},
-          _h("image", {
-            href:TEXTURE_DATA,
-            width:"1",height:"1",
-            preserveAspectRatio:"none"
-          })),
-        // Filter: heavy blur for circles (stdDeviation=219.495)
-        _h("filter", {id:"fCircle",x:"-50%",y:"-50%",width:"200%",height:"200%",
-          filterUnits:"userSpaceOnUse",colorInterpolationFilters:"sRGB"},
-          _h("feFlood", {floodOpacity:"0",result:"bg"}),
-          _h("feBlend", {mode:"normal","in":"SourceGraphic",in2:"bg",result:"shape"}),
-          _h("feGaussianBlur", {stdDeviation:"219.495"})),
-        // Filter: flame blur (stdDeviation=100.301)
-        _h("filter", {id:"fFlame",x:"-50%",y:"-50%",width:"200%",height:"200%",
-          filterUnits:"userSpaceOnUse",colorInterpolationFilters:"sRGB"},
-          _h("feFlood", {floodOpacity:"0",result:"bg"}),
-          _h("feBlend", {mode:"normal","in":"SourceGraphic",in2:"bg",result:"shape"}),
-          _h("feGaussianBlur", {stdDeviation:"100.301"})),
-        // Gradient for circles: #2976FB (0.6 opacity) → #D12966
+          _h("image", {href:TEXTURE_DATA,width:"1",height:"1",preserveAspectRatio:"none"})),
+        // Gradients
         _h("linearGradient", {id:"gCircle",gradientUnits:"userSpaceOnUse",
           x1:"774.966",y1:"746.403",x2:"103.143",y2:"-351.588"},
           _h("stop", {stopColor:"#2976FB",stopOpacity:"0.6"}),
           _h("stop", {offset:"1",stopColor:"#D12966"})),
-        // Gradient for small circle
         _h("linearGradient", {id:"gSmall",gradientUnits:"userSpaceOnUse",
           x1:"497.34",y1:"479.01",x2:"66.1929",y2:"-225.634"},
           _h("stop", {stopColor:"#2976FB",stopOpacity:"0.6"}),
           _h("stop", {offset:"1",stopColor:"#D12966"})),
-        // Gradient for flame: #FA3D0E → #FBFF00
         _h("linearGradient", {id:"gFlame",gradientUnits:"userSpaceOnUse",
           x1:"706.544",y1:"701.27",x2:"1731.13",y2:"280.714"},
           _h("stop", {stopColor:"#FA3D0E"}),
           _h("stop", {offset:"1",stopColor:"#FBFF00"})),
-        // Clip paths from reference
+        // Clip paths
         _h("clipPath", {id:"clipOuter"}, _h("rect", {width:"1268",height:"695",fill:"white"})),
         _h("clipPath", {id:"clipInner"},
           _h("rect", {width:"1323.87",height:"2507.34",fill:"white",
-            transform:"matrix(0.474291 0.880368 0.880368 -0.474291 -857.502 521.29)"}))
+            transform:"matrix(0.474291 0.880368 0.880368 -0.474291 -857.502 521.29)"})),
+        // Source layers – rendered only through feImage
+        _h("g", {id:"srcInnerBg"},
+          _h("rect", {width:"1323.87",height:"2507.34",fill:"black",
+            transform:"matrix(0.474291 0.880368 0.880368 -0.474291 -857.502 521.29)"})),
+        _h("g", {id:"srcTex"},
+          _h("rect", {width:"1873.02",height:"2497.36",fill:"url(#texPat)",
+            transform:"matrix(0.474291 0.880368 0.880368 -0.474291 -638.404 403.195)"})),
+        _h("g", {id:"srcCircle"},
+          _h("circle", {cx:"543.983",cy:"543.983",r:"543.983",fill:"url(#gCircle)",
+            transform:"matrix(-0.999567 -0.0294361 -0.0294361 0.999567 1744.29 -392.289)"})),
+        _h("g", {id:"srcFlame"},
+          _h("path", {
+            d:"M1038.15 -70.7499L1025.9 -96.2038L1694.52 191.521L1494.08 1044.4L1394.84 777.023C1327.01 594.297 1127.92 496.748 941.958 555.129L285.256 761.3L893.779 403.644C1057.97 307.14 1120.75 100.862 1038.15 -70.7499Z",
+            fill:"url(#gFlame)",fillOpacity:"0.88"})),
+        _h("g", {id:"srcSmallCircle"},
+          _h("circle", {cx:"349.105",cy:"349.105",r:"349.105",fill:"url(#gSmall)",
+            transform:"matrix(-0.999567 -0.0294361 -0.0294361 0.999567 1532.2 -224.699)"})),
+        // Composite filter – all blending in sRGB
+        _h("filter", {id:"aurora",x:"-700",y:"-700",width:"2668",height:"2095",
+          filterUnits:"userSpaceOnUse",primitiveUnits:"userSpaceOnUse",
+          colorInterpolationFilters:"sRGB"},
+          _h("feImage", {href:"#srcInnerBg",result:"bg"}),
+          _h("feImage", {href:"#srcTex",result:"tex"}),
+          _h("feBlend", {mode:"normal","in":"tex",in2:"bg",result:"base"}),
+          _h("feImage", {href:"#srcCircle",result:"c1"}),
+          _h("feGaussianBlur", {"in":"c1",stdDeviation:"219.495",result:"c1b"}),
+          _h("feBlend", {mode:"color-dodge","in":"c1b",in2:"base",result:"l2"}),
+          _h("feImage", {href:"#srcCircle",result:"c2"}),
+          _h("feGaussianBlur", {"in":"c2",stdDeviation:"219.495",result:"c2b"}),
+          _h("feBlend", {mode:"color-dodge","in":"c2b",in2:"l2",result:"l3"}),
+          _h("feImage", {href:"#srcFlame",result:"fl"}),
+          _h("feGaussianBlur", {"in":"fl",stdDeviation:"100.301",result:"flb"}),
+          _h("feBlend", {mode:"normal","in":"flb",in2:"l3",result:"l4"}),
+          _h("feImage", {href:"#srcSmallCircle",result:"sc"}),
+          _h("feGaussianBlur", {"in":"sc",stdDeviation:"219.495",result:"scb"}),
+          _h("feBlend", {mode:"color-dodge","in":"scb",in2:"l4"})
+        )
       ),
-      // Outer clip
+      // Render: single rect through the composite filter, clipped
       _h("g", {clipPath:"url(#clipOuter)"},
         _h("rect", {width:"1268",height:"695",fill:"black"}),
-        // Lighten group with clip
-        _h("g", {style:{mixBlendMode:"lighten"},clipPath:"url(#clipInner)"},
-          // Black underlay
-          _h("rect", {width:"1323.87",height:"2507.34",fill:"black",
-            transform:"matrix(0.474291 0.880368 0.880368 -0.474291 -857.502 521.29)"}),
-          // Texture image
-          _h("rect", {width:"1873.02",height:"2497.36",fill:"url(#texPat)",
-            transform:"matrix(0.474291 0.880368 0.880368 -0.474291 -638.404 403.195)"}),
-          // Large circle 1: color-dodge
-          _h("g", {filter:"url(#fCircle)",style:{mixBlendMode:"color-dodge"}},
-            _h("circle", {cx:"543.983",cy:"543.983",r:"543.983",fill:"url(#gCircle)",
-              transform:"matrix(-0.999567 -0.0294361 -0.0294361 0.999567 1744.29 -392.289)"})),
-          // Large circle 2: color-dodge (duplicate)
-          _h("g", {filter:"url(#fCircle)",style:{mixBlendMode:"color-dodge"}},
-            _h("circle", {cx:"543.983",cy:"543.983",r:"543.983",fill:"url(#gCircle)",
-              transform:"matrix(-0.999567 -0.0294361 -0.0294361 0.999567 1744.29 -392.289)"})),
-          // Flame path
-          _h("g", {filter:"url(#fFlame)"},
-            _h("path", {
-              d:"M1038.15 -70.7499L1025.9 -96.2038L1694.52 191.521L1494.08 1044.4L1394.84 777.023C1327.01 594.297 1127.92 496.748 941.958 555.129L285.256 761.3L893.779 403.644C1057.97 307.14 1120.75 100.862 1038.15 -70.7499Z",
-              fill:"url(#gFlame)",fillOpacity:"0.88"})),
-          // Small circle: color-dodge
-          _h("g", {filter:"url(#fCircle)",style:{mixBlendMode:"color-dodge"}},
-            _h("circle", {cx:"349.105",cy:"349.105",r:"349.105",fill:"url(#gSmall)",
-              transform:"matrix(-0.999567 -0.0294361 -0.0294361 0.999567 1532.2 -224.699)"}))
+        _h("g", {clipPath:"url(#clipInner)"},
+          _h("rect", {width:"1268",height:"695",filter:"url(#aurora)"})
         )
       )
     )
