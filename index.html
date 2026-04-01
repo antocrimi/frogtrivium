@@ -124,7 +124,7 @@ function shuffle(arr) {
 var ROUND_SIZE = 10;
 var sans = '"GT America", -apple-system, "Helvetica Neue", Arial, sans-serif';
 var serif = '"frogSerif", Georgia, "Times New Roman", serif';
-var letters = ["a", "b", "c", "d"];
+var letters = ["1", "2", "3", "4"];
 
 // ─── AURORA BACKGROUND (faithful to reference SVG) ─────────────────────────
 // Exact layer stack from background.svg:
@@ -142,7 +142,7 @@ function AuroraBackground() {
 // ─── STYLES ────────────────────────────────────────────────────────────────
 var S = {
   page:{position:"relative",zIndex:1,minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px",color:"#fff",fontFamily:sans},
-  nav:{position:"fixed",top:0,left:0,right:0,zIndex:100,display:"flex",alignItems:"center",justifyContent:"space-between",padding:"16px 32px",backdropFilter:"blur(24px)",WebkitBackdropFilter:"blur(24px)",background:"rgba(0,0,0,0.55)",borderBottom:"1px solid rgba(255,255,255,0.1)"},
+  nav:{position:"fixed",top:0,left:0,right:0,zIndex:100,display:"flex",alignItems:"center",justifyContent:"space-between",padding:"16px 32px",transition:"background 0.3s ease, border-color 0.3s ease"},
   navLogo:{fontFamily:serif,fontSize:"28px",fontWeight:"normal",letterSpacing:"-0.02em"},
   navLabel:{fontFamily:sans,fontSize:"10px",fontWeight:"400",textTransform:"uppercase",letterSpacing:"2.8px",opacity:0.6},
   card:{position:"relative",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",background:"rgba(0,0,0,0.50)",border:"1px solid rgba(255,255,255,0.08)",padding:"48px",maxWidth:"680px",width:"100%"},
@@ -169,6 +169,13 @@ function Trivium() {
   var _ans = useState([]), answers = _ans[0], setAnswers = _ans[1];
   var _fi = useState(true), fadeIn = _fi[0], setFadeIn = _fi[1];
   var _cs = useState(false), copied = _cs[0], setCopied = _cs[1];
+  var _scr = useState(false), scrolled = _scr[0], setScrolled = _scr[1];
+  var isMob = typeof window !== "undefined" && window.innerWidth <= 768;
+  useEffect(function() {
+    var onScroll = function() { setScrolled(window.scrollY > 10); };
+    window.addEventListener("scroll", onScroll, {passive:true});
+    return function() { window.removeEventListener("scroll", onScroll); };
+  }, []);
 
   var startGame = useCallback(function() {
     var picked = shuffle(QUESTIONS).slice(0, ROUND_SIZE);
@@ -308,21 +315,30 @@ function Trivium() {
   return _h(_F, null,
     _h(AuroraBackground),
     // Nav
-    _h("div", {style:S.nav},
-      _h("div", {style:{display:"flex",alignItems:"baseline",gap:"12px"}},
+    _h("div", {style:Object.assign({},S.nav,scrolled?{backdropFilter:"blur(24px)",WebkitBackdropFilter:"blur(24px)",background:"rgba(0,0,0,0.6)",borderBottom:"1px solid rgba(255,255,255,0.08)"}:{})},
+      _h("div", null,
         _h("span", {style:S.navLogo}, "frog"),
-        _h("span", {style:S.navLabel}, "trivium")),
+        _h("span", {style:Object.assign({},S.navLogo,{fontStyle:"italic"})}, "Trivium")),
       screen === "playing" && _h("div", {style:S.chip}, score + " / " + ROUND_SIZE)),
     // Content
     _h("div", {style:Object.assign({},S.page,{opacity:fadeIn?1:0,transition:"opacity 0.2s ease"})},
       // START
-      screen === "start" && _h("div", {style:{textAlign:"center",maxWidth:"600px"}},
-        _h("div", {style:Object.assign({},S.label,{marginBottom:"24px"})}, "A frog knowledge game"),
-        _h("h1", {style:Object.assign({},S.hd,{fontSize:"clamp(48px, 10vw, 96px)",margin:"0 0 8px"})},
-          "frog",_h("span", {style:{fontStyle:"italic"}}, "Trivium")),
-        _h("p", {style:Object.assign({},S.body,{opacity:0.6,marginBottom:"48px",maxWidth:"400px",marginLeft:"auto",marginRight:"auto",lineHeight:"1.4"})},
-          "Ten questions. One legendary design company. How well do you know frog?"),
-        _h("button", {style:S.btnP,onClick:startGame,onMouseEnter:hoverP,onMouseLeave:unhoverP}, "PLAY")),
+      screen === "start" && (isMob
+        ? _h("div", {style:{display:"flex",flexDirection:"column",alignItems:"stretch",flex:"1",alignSelf:"stretch",paddingTop:"15vh"}},
+            _h("div", {style:{textAlign:"center",marginBottom:"auto",paddingBottom:"40px"}},
+              _h("div", {style:Object.assign({},S.label,{marginBottom:"24px"})}, "A frog knowledge game"),
+              _h("h1", {style:Object.assign({},S.hd,{fontSize:"clamp(64px, 17vw, 96px)",margin:"0 0 20px",lineHeight:"1.0"})},
+                "frog", _h("br", null), _h("span", {style:{fontStyle:"italic"}}, "Trivium")),
+              _h("p", {style:Object.assign({},S.body,{opacity:0.6,marginBottom:"0",lineHeight:"1.4"})},
+                "Ten questions. One legendary design company.", _h("br", null), "How well do you know frog?")),
+            _h("button", {style:Object.assign({},S.btnP,{width:"100%"}),onClick:startGame,onMouseEnter:hoverP,onMouseLeave:unhoverP}, "PLAY"))
+        : _h("div", {style:{textAlign:"center",maxWidth:"600px"}},
+            _h("div", {style:Object.assign({},S.label,{marginBottom:"24px"})}, "A frog knowledge game"),
+            _h("h1", {style:Object.assign({},S.hd,{fontSize:"clamp(48px, 10vw, 96px)",margin:"0 0 8px"})},
+              "frog",_h("span", {style:{fontStyle:"italic"}}, "Trivium")),
+            _h("p", {style:Object.assign({},S.body,{opacity:0.6,marginBottom:"48px",maxWidth:"400px",marginLeft:"auto",marginRight:"auto",lineHeight:"1.4"})},
+              "Ten questions. One legendary design company.", _h("br", null), "How well do you know frog?"),
+            _h("button", {style:S.btnP,onClick:startGame,onMouseEnter:hoverP,onMouseLeave:unhoverP}, "PLAY"))),
       // QUESTION
       screen === "playing" && questions[current] && _h("div", {style:Object.assign({},S.card,{marginTop:"64px"})},
         _h("div", {style:S.pBar}, _h("div", {style:Object.assign({},S.pFill,{width:((current+1)/ROUND_SIZE*100)+"%"})})),
