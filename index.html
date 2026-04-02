@@ -57,27 +57,6 @@ var _F = React.Fragment;
 var useState = React.useState;
 var useEffect = React.useEffect;
 var useCallback = React.useCallback;
-var useRef = React.useRef;
-
-// ─── HAPTIC ────────────────────────────────────────────────────────────────
-var _hapticCtx = null;
-function triggerHaptic(correct) {
-  // Android
-  if (navigator.vibrate) { navigator.vibrate(correct ? 50 : [50, 80, 50]); return; }
-  // iOS: play 1-sample silent AudioBuffer — triggers Taptic Engine on iPhone
-  try {
-    if (!_hapticCtx) _hapticCtx = new (window.AudioContext || window.webkitAudioContext)();
-    var ctx = _hapticCtx;
-    function tap(delay) {
-      var buf = ctx.createBuffer(1, 1, 22050);
-      var src = ctx.createBufferSource();
-      src.buffer = buf; src.connect(ctx.destination);
-      src.start(ctx.currentTime + (delay || 0));
-    }
-    tap(0);
-    if (!correct) tap(0.13);
-  } catch(e) {}
-}
 
 // ─── TRIVIA QUESTIONS DATABASE ─────────────────────────────────────────────
 var QUESTIONS = [
@@ -225,23 +204,13 @@ function Trivium() {
     setTimeout(function(){setScreen("playing"); setFadeIn(true);}, 200);
   }, []);
 
-  var resultRef = useRef(null);
-
-  useEffect(function() {
-    if (selected !== null && resultRef.current) {
-      setTimeout(function() {
-        resultRef.current.scrollIntoView({behavior:"smooth", block:"start"});
-      }, 60);
-    }
-  }, [selected]);
-
   var selectAnswer = function(idx) {
     if (selected !== null) return;
     setSelected(idx);
     var correct = idx === questions[current].a;
     if (correct) setScore(function(s){return s+1});
     setAnswers(function(a){return a.concat([{question:questions[current],chosen:idx,correct:correct}])});
-    triggerHaptic(correct);
+    if (navigator.vibrate) navigator.vibrate(correct ? 50 : [50, 80, 50]);
   };
 
   var nextQuestion = function() {
@@ -413,7 +382,7 @@ function Trivium() {
             _h("span", {style:S.oLtr}, letters[i]),
             _h("span", {style:S.oTxt}, opt));
         })),
-        selected !== null && _h("div", {ref:resultRef, style:{marginTop:"32px"}},
+        selected !== null && _h("div", {style:{marginTop:"32px"}},
           _h("div", {style:{height:"1px",background:"rgba(255,255,255,0.12)",marginBottom:"28px"}}),
           _h("div", {style:{display:"flex",alignItems:"center",gap:"10px",marginBottom:"14px"}},
             selected === questions[current].a
@@ -449,15 +418,28 @@ function Trivium() {
           _h("p", {style:Object.assign({},S.body,{opacity:animatedScore>=score?0.7:0,maxWidth:"480px",marginLeft:"auto",marginRight:"auto",lineHeight:"1.7",
             transform:animatedScore>=score?"translateY(0)":"translateY(12px)",transition:"opacity 0.5s ease 0.4s, transform 0.5s ease 0.4s"})},
             getTierInfo(score).desc),
-          // CTAs with fade-in
-          _h("div", {style:{marginTop:"36px",opacity:animatedScore>=score?1:0,transition:"opacity 0.5s ease 0.6s",display:"flex",flexDirection:"column",alignItems:"center",gap:"12px",width:"100%"}},
-            _h("button", {style:Object.assign({},S.btnP,{display:"inline-flex",alignItems:"center",gap:"10px",width:isMob?"100%":"auto",justifyContent:"center"}),onClick:handleShare,onMouseEnter:hoverP,onMouseLeave:unhoverP},
+          // Share button with fade-in
+          _h("div", {style:{marginTop:"36px",opacity:animatedScore>=score?1:0,transition:"opacity 0.5s ease 0.6s"}},
+            _h("button", {style:Object.assign({},S.btnS,{display:"inline-flex",alignItems:"center",gap:"10px",padding:"14px 36px"}),onClick:handleShare,onMouseEnter:hoverS,onMouseLeave:unhoverS},
               _h("svg", {viewBox:"0 0 20 20",style:{width:"16px",height:"16px"},fill:"none",stroke:"currentColor",strokeWidth:"1.8",strokeLinecap:"round",strokeLinejoin:"round"},
                 _h("path", {d:"M15 7l-5-5-5 5"}),
                 _h("line", {x1:"10",y1:"2",x2:"10",y2:"14"}),
                 _h("path", {d:"M3 12v4a2 2 0 002 2h10a2 2 0 002-2v-4"})),
-              copied ? "Copied to clipboard!" : "Share result"),
-            _h("button", {style:Object.assign({},S.btnS,{width:isMob?"100%":"auto"}),onClick:startGame,onMouseEnter:hoverS,onMouseLeave:unhoverS}, "Play again"))))
+              copied ? "Copied to clipboard!" : "Share result"))),
+        // Breakdown card
+        _h("div", {style:Object.assign({},S.card,{padding:"32px",marginBottom:"32px"})},
+          _h("div", {style:Object.assign({},S.label,{marginBottom:"20px"})}, "Breakdown"),
+          answers.map(function(a, i) {
+            return _h("div", {key:i, style:{display:"flex",gap:"16px",padding:"16px 0",borderBottom:i<answers.length-1?"1px solid rgba(255,255,255,0.08)":"none",alignItems:"baseline"}},
+              _h("span", {style:{fontFamily:serif,fontSize:"14px",fontStyle:"italic",color:a.correct?"#4ee601":"#fb6446",flexShrink:0,width:"20px"}}, i+1),
+              _h("div", null,
+                _h("div", {style:Object.assign({},S.body,{fontSize:"15px",marginBottom:"4px"})}, a.question.q),
+                !a.correct && _h("div", {style:{fontSize:"13px",opacity:0.5}}, "Answer: " + a.question.o[a.question.a])));
+          })),
+        // Action buttons
+        _h("div", {style:{display:"flex",gap:"16px",justifyContent:"center",paddingBottom:"48px"}},
+          _h("button", {style:S.btnP,onClick:startGame,onMouseEnter:hoverP,onMouseLeave:unhoverP}, "Play again"),
+          _h("button", {style:S.btnS,onClick:goHome,onMouseEnter:hoverS,onMouseLeave:unhoverS}, "Home"))))
   );
 }
 
