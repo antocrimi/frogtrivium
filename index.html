@@ -210,6 +210,7 @@ function Trivium() {
     var correct = idx === questions[current].a;
     if (correct) setScore(function(s){return s+1});
     setAnswers(function(a){return a.concat([{question:questions[current],chosen:idx,correct:correct}])});
+    if (navigator.vibrate) navigator.vibrate(correct ? 50 : [50, 80, 50]);
   };
 
   var nextQuestion = function() {
@@ -363,7 +364,7 @@ function Trivium() {
       screen === "playing" && questions[current] && _h("div", {style:Object.assign({},S.card,{marginTop:"64px"})},
         _h("div", {style:S.pBar}, _h("div", {style:Object.assign({},S.pFill,{width:((current+1)/ROUND_SIZE*100)+"%"})})),
         _h("div", {style:Object.assign({},S.label,{marginBottom:"24px"})}, "Question " + (current+1) + " of " + ROUND_SIZE),
-        _h("h2", {style:Object.assign({},S.hd,{fontSize:"clamp(22px, 4vw, 32px)",margin:"0 0 32px",lineHeight:"1.3"})}, questions[current].q),
+        _h("h2", {style:Object.assign({},S.hd,{fontSize:"clamp(26px, 5vw, 36px)",margin:"0 0 32px",lineHeight:"1.25"})}, questions[current].q),
         _h("div", null, questions[current].o.map(function(opt, i) {
           var isSelected = selected === i;
           var isCorrect = i === questions[current].a;
@@ -382,8 +383,18 @@ function Trivium() {
             _h("span", {style:S.oTxt}, opt));
         })),
         selected !== null && _h("div", {style:{marginTop:"32px"}},
-          _h("div", {style:{fontFamily:serif,fontSize:"18px",color:selected===questions[current].a?"#4ee601":"#fb6446",marginBottom:"8px"}},
-            selected === questions[current].a ? "Correct." : "Incorrect."),
+          _h("div", {style:{height:"1px",background:"rgba(255,255,255,0.12)",marginBottom:"28px"}}),
+          _h("div", {style:{display:"flex",alignItems:"center",gap:"10px",marginBottom:"14px"}},
+            selected === questions[current].a
+              ? _h("svg", {viewBox:"0 0 20 20",width:"20",height:"20",fill:"none",stroke:"#4ee601",strokeWidth:"1.5",strokeLinecap:"round",strokeLinejoin:"round"},
+                  _h("circle", {cx:"10",cy:"10",r:"8",stroke:"#4ee601",strokeWidth:"1"}),
+                  _h("polyline", {points:"6,10 9,13 14,7"}))
+              : _h("svg", {viewBox:"0 0 20 20",width:"20",height:"20",fill:"none",stroke:"#fb6446",strokeWidth:"1.5",strokeLinecap:"round",strokeLinejoin:"round"},
+                  _h("rect", {x:"2",y:"2",width:"16",height:"16",strokeWidth:"1"}),
+                  _h("line", {x1:"6.5",y1:"6.5",x2:"13.5",y2:"13.5"}),
+                  _h("line", {x1:"13.5",y1:"6.5",x2:"6.5",y2:"13.5"})),
+            _h("span", {style:{fontFamily:serif,fontSize:"20px",color:selected===questions[current].a?"#4ee601":"#fb6446"}},
+              selected === questions[current].a ? "Correct." : "Incorrect.")),
           _h("p", {style:Object.assign({},S.body,{fontSize:"14px",opacity:0.65,margin:"0 0 24px",lineHeight:"1.6"})}, questions[current].e),
           _h("button", {style:Object.assign({},S.btnP,isMob?{width:"100%"}:{}),onClick:nextQuestion,onMouseEnter:hoverP,onMouseLeave:unhoverP},
             current+1 < ROUND_SIZE ? "Continue" : "See results"))),
