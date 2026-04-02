@@ -57,6 +57,27 @@ var _F = React.Fragment;
 var useState = React.useState;
 var useEffect = React.useEffect;
 var useCallback = React.useCallback;
+var useRef = React.useRef;
+
+// ─── HAPTIC ────────────────────────────────────────────────────────────────
+var _hapticCtx = null;
+function triggerHaptic(correct) {
+  // Android
+  if (navigator.vibrate) { navigator.vibrate(correct ? 50 : [50, 80, 50]); return; }
+  // iOS: play 1-sample silent AudioBuffer — triggers Taptic Engine on iPhone
+  try {
+    if (!_hapticCtx) _hapticCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var ctx = _hapticCtx;
+    function tap(delay) {
+      var buf = ctx.createBuffer(1, 1, 22050);
+      var src = ctx.createBufferSource();
+      src.buffer = buf; src.connect(ctx.destination);
+      src.start(ctx.currentTime + (delay || 0));
+    }
+    tap(0);
+    if (!correct) tap(0.13);
+  } catch(e) {}
+}
 
 // ─── TRIVIA QUESTIONS DATABASE ─────────────────────────────────────────────
 var QUESTIONS = [
@@ -204,13 +225,23 @@ function Trivium() {
     setTimeout(function(){setScreen("playing"); setFadeIn(true);}, 200);
   }, []);
 
+  var resultRef = useRef(null);
+
+  useEffect(function() {
+    if (selected !== null && resultRef.current) {
+      setTimeout(function() {
+        resultRef.current.scrollIntoView({behavior:"smooth", block:"start"});
+      }, 60);
+    }
+  }, [selected]);
+
   var selectAnswer = function(idx) {
     if (selected !== null) return;
     setSelected(idx);
     var correct = idx === questions[current].a;
     if (correct) setScore(function(s){return s+1});
     setAnswers(function(a){return a.concat([{question:questions[current],chosen:idx,correct:correct}])});
-    if (navigator.vibrate) navigator.vibrate(correct ? 50 : [50, 80, 50]);
+    triggerHaptic(correct);
   };
 
   var nextQuestion = function() {
@@ -382,7 +413,7 @@ function Trivium() {
             _h("span", {style:S.oLtr}, letters[i]),
             _h("span", {style:S.oTxt}, opt));
         })),
-        selected !== null && _h("div", {style:{marginTop:"32px"}},
+        selected !== null && _h("div", {ref:resultRef, style:{marginTop:"32px"}},
           _h("div", {style:{height:"1px",background:"rgba(255,255,255,0.12)",marginBottom:"28px"}}),
           _h("div", {style:{display:"flex",alignItems:"center",gap:"10px",marginBottom:"14px"}},
             selected === questions[current].a
