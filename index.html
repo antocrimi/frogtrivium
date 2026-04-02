@@ -161,7 +161,7 @@ function AuroraBackground() {
 
 // ─── STYLES ────────────────────────────────────────────────────────────────
 var S = {
-  page:{position:"relative",zIndex:1,minHeight:"100dvh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px",color:"#fff",fontFamily:sans},
+  page:{position:"relative",zIndex:1,minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px",color:"#fff",fontFamily:sans},
   nav:{position:"fixed",top:0,left:0,right:0,zIndex:100,display:"flex",alignItems:"center",justifyContent:"space-between",padding:"16px 32px",paddingTop:"max(16px, env(safe-area-inset-top, 16px))",backdropFilter:"blur(48px) saturate(1.6) brightness(0.85)",WebkitBackdropFilter:"blur(48px) saturate(1.6) brightness(0.85)",background:"rgba(8,6,14,0.5)",borderBottom:"0.5px solid rgba(255,255,255,0.1)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,0.15)"},
   navLogo:{fontFamily:serif,fontSize:"28px",fontWeight:"normal",letterSpacing:"-0.02em"},
   navLabel:{fontFamily:sans,fontSize:"10px",fontWeight:"400",textTransform:"uppercase",letterSpacing:"2.8px",opacity:0.6},
@@ -345,7 +345,7 @@ function Trivium() {
     _h("div", {style:Object.assign({},S.page,{opacity:fadeIn?1:0,transition:"opacity 0.2s ease"})},
       // START
       screen === "start" && (isMob
-        ? _h("div", {style:{position:"fixed",inset:0,zIndex:2,overflow:"hidden",display:"flex",flexDirection:"column",padding:"24px",paddingTop:"max(80px, calc(env(safe-area-inset-top, 0px) + 72px))",paddingBottom:"max(100px, calc(env(safe-area-inset-bottom, 0px) + 83px))"}},
+        ? _h("div", {style:{position:"fixed",inset:0,zIndex:2,overflow:"hidden",display:"flex",flexDirection:"column",padding:"24px",paddingTop:"max(80px, calc(env(safe-area-inset-top, 0px) + 72px))",paddingBottom:"max(24px, env(safe-area-inset-bottom, 24px))"}},
             _h("div", {style:{flex:"1",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",textAlign:"center"}},
               _h("div", {style:Object.assign({},S.label,{marginBottom:"24px"})}, "A frog knowledge game"),
               _h("h1", {style:Object.assign({},S.hd,{fontSize:"clamp(72px, 22vw, 96px)",margin:"0 0 20px",lineHeight:"1.0"})},
@@ -361,7 +361,7 @@ function Trivium() {
               "Ten questions. One legendary design company.", _h("br", null), "How well do you know frog?"),
             _h("button", {style:S.btnP,onClick:startGame,onMouseEnter:hoverP,onMouseLeave:unhoverP}, "PLAY"))),
       // QUESTION
-      screen === "playing" && questions[current] && _h("div", {style:Object.assign({},S.card,{overflowY:"auto",maxHeight:"calc(100dvh - 80px)",paddingBottom:"calc(env(safe-area-inset-bottom, 0px) + 83px)"}),
+      screen === "playing" && questions[current] && _h("div", {style:Object.assign({},S.card,{marginTop:"64px"})},
         _h("div", {style:S.pBar}, _h("div", {style:Object.assign({},S.pFill,{width:((current+1)/ROUND_SIZE*100)+"%"})})),
         _h("h2", {style:Object.assign({},S.hd,{fontSize:"clamp(26px, 5vw, 36px)",margin:"0 0 32px",lineHeight:"1.25"})}, questions[current].q),
         _h("div", null, questions[current].o.map(function(opt, i) {
