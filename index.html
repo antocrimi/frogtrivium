@@ -372,10 +372,12 @@ function Trivium() {
         _h("span", {style:S.navLogo}, "frog"),
         _h("span", {style:Object.assign({},S.navLogo,{fontStyle:"italic"})}, "Trivium")),
       screen === "playing" && _h("div", {style:S.chip}, score + " / " + ROUND_SIZE)),
-    screen === "playing" && _h("div", {style:{position:"fixed",top:"calc(env(safe-area-inset-top, 0px) + 60px)",left:0,right:0,zIndex:99,height:"2px",background:"rgba(255,255,255,0.1)"}},
-      _h("div", {style:{height:"100%",background:"#fff",transition:"width 0.4s ease",width:((current+1)/ROUND_SIZE*100)+"%"}})),
+    
+
     // Content
     _h("div", {style:Object.assign({},S.page,{opacity:fadeIn?1:0,transition:"opacity 0.2s ease"})},
+      _h("div", {style:{position:"fixed",top:"calc(env(safe-area-inset-top, 0px) + 60px)",left:"0",right:"0",zIndex:99,height:"2px",background:"rgba(255,255,255,0.1)",pointerEvents:"none"}},
+        _h("div", {style:{height:"100%",background:"#fff",transition:"width 0.4s ease",width:screen==="playing"?((current+1)/ROUND_SIZE*100)+"%":"0%"}})),
       // START
       screen === "start" && (isMob
         ? _h("div", {style:{position:"fixed",inset:0,zIndex:2,overflow:"hidden",display:"flex",flexDirection:"column",padding:"24px",paddingTop:"max(80px, calc(env(safe-area-inset-top, 0px) + 72px))",paddingBottom:"max(24px, env(safe-area-inset-bottom, 24px))"}},
