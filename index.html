@@ -372,8 +372,6 @@ function Trivium() {
         _h("span", {style:S.navLogo}, "frog"),
         _h("span", {style:Object.assign({},S.navLogo,{fontStyle:"italic"})}, "Trivium")),
       screen === "playing" && _h("div", {style:S.chip}, score + " / " + ROUND_SIZE)),
-    
-
     // Content
     _h("div", {style:Object.assign({},S.page,{opacity:fadeIn?1:0,transition:"opacity 0.2s ease"})},
       _h("div", {style:{position:"fixed",top:"calc(env(safe-area-inset-top, 0px) + 60px)",left:"0",right:"0",zIndex:99,height:"2px",background:"rgba(255,255,255,0.1)",pointerEvents:"none"}},
