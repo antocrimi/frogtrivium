@@ -374,8 +374,6 @@ function Trivium() {
       screen === "playing" && _h("div", {style:S.chip}, score + " / " + ROUND_SIZE)),
     // Content
     _h("div", {style:Object.assign({},S.page,{opacity:fadeIn?1:0,transition:"opacity 0.2s ease"})},
-      _h("div", {style:{position:"fixed",top:"calc(env(safe-area-inset-top, 0px) + 60px)",left:"0",right:"0",zIndex:99,height:"2px",background:"rgba(255,255,255,0.1)",pointerEvents:"none"}},
-        _h("div", {style:{height:"100%",background:"#fff",transition:"width 0.4s ease",width:screen==="playing"?((current+1)/ROUND_SIZE*100)+"%":"0%"}})),
       // START
       screen === "start" && (isMob
         ? _h("div", {style:{position:"fixed",inset:0,zIndex:2,overflow:"hidden",display:"flex",flexDirection:"column",padding:"24px",paddingTop:"max(80px, calc(env(safe-area-inset-top, 0px) + 72px))",paddingBottom:"max(24px, env(safe-area-inset-bottom, 24px))"}},
@@ -394,7 +392,8 @@ function Trivium() {
               "Ten questions. One legendary design company.", _h("br", null), "How well do you know frog?"),
             _h("button", {style:S.btnP,onClick:startGame,onMouseEnter:hoverP,onMouseLeave:unhoverP}, "PLAY"))),
       // QUESTION
-      screen === "playing" && questions[current] && _h("div", {style:{maxWidth:"680px",width:"100%",marginTop:"64px",padding:"0 24px"}},
+      screen === "playing" && questions[current] && _h("div", {style:Object.assign({},S.card,{marginTop:"64px"})},
+        _h("div", {style:S.pBar}, _h("div", {style:Object.assign({},S.pFill,{width:((current+1)/ROUND_SIZE*100)+"%"})})),
         _h("div", {style:Object.assign({},S.label,{marginBottom:"24px"})}, "Question " + (current+1) + " of " + ROUND_SIZE),
         _h("h2", {style:Object.assign({},S.hd,{fontSize:"clamp(26px, 5vw, 36px)",margin:"0 0 32px",lineHeight:"1.25"})}, questions[current].q),
         _h("div", null, questions[current].o.map(function(opt, i) {
