@@ -343,8 +343,6 @@ function Trivium() {
       screen === "playing" && _h("div", {style:S.chip}, score + " / " + ROUND_SIZE)),
     // Content
     _h("div", {style:Object.assign({},S.page,{opacity:fadeIn?1:0,transition:"opacity 0.2s ease"})},
-      _h("div", {style:{position:"fixed",top:"calc(env(safe-area-inset-top, 0px) + 60px)",left:"0",right:"0",zIndex:99,height:"2px",background:"rgba(255,255,255,0.1)",pointerEvents:"none"}},
-        _h("div", {style:{height:"100%",background:"#fff",transition:"width 0.4s ease",width:screen==="playing"?((current+1)/ROUND_SIZE*100)+"%":"0%"}})),
       // START
       screen === "start" && (isMob
         ? _h("div", {style:{position:"fixed",inset:0,zIndex:2,overflow:"hidden",display:"flex",flexDirection:"column",padding:"24px",paddingTop:"max(80px, calc(env(safe-area-inset-top, 0px) + 72px))",paddingBottom:"max(24px, env(safe-area-inset-bottom, 24px))"}},
@@ -363,8 +361,8 @@ function Trivium() {
               "Ten questions. One legendary design company.", _h("br", null), "How well do you know frog?"),
             _h("button", {style:S.btnP,onClick:startGame,onMouseEnter:hoverP,onMouseLeave:unhoverP}, "PLAY"))),
       // QUESTION
-      screen === "playing" && questions[current] && _h("div", {style:{maxWidth:"680px",width:"100%",marginTop:"64px",padding:"0 24px"}},
-        _h("div", {style:Object.assign({},S.label,{marginBottom:"24px"})}, "Question " + (current+1) + " of " + ROUND_SIZE),
+      screen === "playing" && questions[current] && _h("div", {style:Object.assign({},S.card,{marginTop:"64px"})},
+        _h("div", {style:S.pBar}, _h("div", {style:Object.assign({},S.pFill,{width:((current+1)/ROUND_SIZE*100)+"%"})})),
         _h("h2", {style:Object.assign({},S.hd,{fontSize:"clamp(26px, 5vw, 36px)",margin:"0 0 32px",lineHeight:"1.25"})}, questions[current].q),
         _h("div", null, questions[current].o.map(function(opt, i) {
           var isSelected = selected === i;
@@ -427,20 +425,15 @@ function Trivium() {
                 _h("line", {x1:"10",y1:"2",x2:"10",y2:"14"}),
                 _h("path", {d:"M3 12v4a2 2 0 002 2h10a2 2 0 002-2v-4"})),
               copied ? "Copied to clipboard!" : "Share result"))),
-        // Breakdown card
-        _h("div", {style:Object.assign({},S.card,{padding:"32px",marginBottom:"32px"})},
-          _h("div", {style:Object.assign({},S.label,{marginBottom:"20px"})}, "Breakdown"),
-          answers.map(function(a, i) {
-            return _h("div", {key:i, style:{display:"flex",gap:"16px",padding:"16px 0",borderBottom:i<answers.length-1?"1px solid rgba(255,255,255,0.08)":"none",alignItems:"baseline"}},
-              _h("span", {style:{fontFamily:serif,fontSize:"14px",fontStyle:"italic",color:a.correct?"#4ee601":"#fb6446",flexShrink:0,width:"20px"}}, i+1),
-              _h("div", null,
-                _h("div", {style:Object.assign({},S.body,{fontSize:"15px",marginBottom:"4px"})}, a.question.q),
-                !a.correct && _h("div", {style:{fontSize:"13px",opacity:0.5}}, "Answer: " + a.question.o[a.question.a])));
-          })),
         // Action buttons
-        _h("div", {style:{display:"flex",gap:"16px",justifyContent:"center",paddingBottom:"48px"}},
-          _h("button", {style:S.btnP,onClick:startGame,onMouseEnter:hoverP,onMouseLeave:unhoverP}, "Play again"),
-          _h("button", {style:S.btnS,onClick:goHome,onMouseEnter:hoverS,onMouseLeave:unhoverS}, "Home"))))
+        _h("div", {style:{display:"flex",flexDirection:"column",alignItems:"center",gap:"12px",paddingBottom:"48px",width:"100%"}},
+          _h("button", {style:Object.assign({},S.btnP,{display:"inline-flex",alignItems:"center",gap:"10px",width:isMob?"100%":"auto",justifyContent:"center"}),onClick:handleShare,onMouseEnter:hoverP,onMouseLeave:unhoverP},
+            _h("svg", {viewBox:"0 0 20 20",style:{width:"16px",height:"16px"},fill:"none",stroke:"currentColor",strokeWidth:"1.8",strokeLinecap:"round",strokeLinejoin:"round"},
+              _h("path", {d:"M15 7l-5-5-5 5"}),
+              _h("line", {x1:"10",y1:"2",x2:"10",y2:"14"}),
+              _h("path", {d:"M3 12v4a2 2 0 002 2h10a2 2 0 002-2v-4"})),
+            copied ? "Copied!" : "Share result"),
+          _h("button", {style:Object.assign({},S.btnS,{width:isMob?"100%":"auto"}),onClick:startGame,onMouseEnter:hoverS,onMouseLeave:unhoverS}, "Play again"))))
   );
 }
 
