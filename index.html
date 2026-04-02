@@ -34,7 +34,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body {
   min-height: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
   background-color: #000;
 }
 body {
@@ -241,6 +241,11 @@ function Trivium() {
   };
 
   var _as = useState(0), animatedScore = _as[0], setAnimatedScore = _as[1];
+  useEffect(function() {
+    document.body.style.overflow = (screen === "start" && isMob) ? "hidden" : "";
+    return function() { document.body.style.overflow = ""; };
+  }, [screen]);
+
   useEffect(function() {
     if (screen !== "results") return;
     var interval = setInterval(function() {
