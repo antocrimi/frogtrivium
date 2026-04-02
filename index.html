@@ -361,7 +361,7 @@ function Trivium() {
               "Ten questions. One legendary design company.", _h("br", null), "How well do you know frog?"),
             _h("button", {style:S.btnP,onClick:startGame,onMouseEnter:hoverP,onMouseLeave:unhoverP}, "PLAY"))),
       // QUESTION
-      screen === "playing" && questions[current] && _h("div", {style:Object.assign({},S.card,{marginTop:"64px"})},
+      screen === "playing" && questions[current] && _h("div", {style:Object.assign({},S.card,{})},
         _h("div", {style:S.pBar}, _h("div", {style:Object.assign({},S.pFill,{width:((current+1)/ROUND_SIZE*100)+"%"})})),
         _h("h2", {style:Object.assign({},S.hd,{fontSize:"clamp(26px, 5vw, 36px)",margin:"0 0 32px",lineHeight:"1.25"})}, questions[current].q),
         _h("div", null, questions[current].o.map(function(opt, i) {
