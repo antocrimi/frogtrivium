@@ -34,7 +34,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body {
   min-height: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
   background-color: #000;
 }
 body {
@@ -330,7 +330,7 @@ function Trivium() {
     _h("div", {style:Object.assign({},S.page,{opacity:fadeIn?1:0,transition:"opacity 0.2s ease"})},
       // START
       screen === "start" && (isMob
-        ? _h("div", {style:{position:"fixed",inset:0,zIndex:2,display:"flex",flexDirection:"column",padding:"24px",paddingTop:"max(80px, calc(env(safe-area-inset-top, 0px) + 72px))",paddingBottom:"max(24px, env(safe-area-inset-bottom, 24px))"}},
+        ? _h("div", {style:{position:"fixed",inset:0,zIndex:2,overflow:"hidden",display:"flex",flexDirection:"column",padding:"24px",paddingTop:"max(80px, calc(env(safe-area-inset-top, 0px) + 72px))",paddingBottom:"max(24px, env(safe-area-inset-bottom, 24px))"}},
             _h("div", {style:{flex:"1",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",textAlign:"center"}},
               _h("div", {style:Object.assign({},S.label,{marginBottom:"24px"})}, "A frog knowledge game"),
               _h("h1", {style:Object.assign({},S.hd,{fontSize:"clamp(72px, 22vw, 96px)",margin:"0 0 20px",lineHeight:"1.0"})},
