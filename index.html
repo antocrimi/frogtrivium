@@ -57,6 +57,7 @@ var _F = React.Fragment;
 var useState = React.useState;
 var useEffect = React.useEffect;
 var useCallback = React.useCallback;
+var useRef = React.useRef;
 
 // ─── TRIVIA QUESTIONS DATABASE ─────────────────────────────────────────────
 var QUESTIONS = [
@@ -203,6 +204,14 @@ function Trivium() {
     setFadeIn(false);
     setTimeout(function(){setScreen("playing"); setFadeIn(true);}, 200);
   }, []);
+
+  var resultRef = useRef(null);
+
+  useEffect(function() {
+    if (selected !== null && resultRef.current) {
+      setTimeout(function() { resultRef.current.scrollIntoView({behavior:"smooth", block:"start"}); }, 60);
+    }
+  }, [selected]);
 
   var selectAnswer = function(idx) {
     if (selected !== null) return;
@@ -381,7 +390,7 @@ function Trivium() {
             _h("span", {style:S.oLtr}, letters[i]),
             _h("span", {style:S.oTxt}, opt));
         })),
-        selected !== null && _h("div", {style:{marginTop:"32px"}},
+        selected !== null && _h("div", {ref:resultRef, style:{marginTop:"32px"}},
           _h("div", {style:{height:"1px",background:"rgba(255,255,255,0.12)",marginBottom:"28px"}}),
           _h("div", {style:{display:"flex",alignItems:"center",gap:"10px",marginBottom:"14px"}},
             selected === questions[current].a
