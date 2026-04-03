@@ -57,79 +57,78 @@ var _F = React.Fragment;
 var useState = React.useState;
 var useEffect = React.useEffect;
 var useCallback = React.useCallback;
-var useRef = React.useRef;
 
 // ─── TRIVIA QUESTIONS DATABASE ─────────────────────────────────────────────
 var QUESTIONS = [
-  {q:"Year frog was founded?",o:["1965","1969","1972","1976"],a:1,e:"Hartmut Esslinger founded what would become frog in 1969 in the Black Forest region of Germany."},
+  {q:"In what year was frog founded?",o:["1965","1969","1972","1976"],a:1,e:"Hartmut Esslinger founded what would become frog in 1969 in the Black Forest region of Germany."},
   {q:"Who founded frog?",o:["Dieter Rams","Hartmut Esslinger","Jony Ive","Raymond Loewy"],a:1,e:"Hartmut Esslinger, born in the Black Forest region of Germany, founded the company alongside Patricia Roller."},
-  {q:"What does 'frog' stand for?",o:["Future Research in Organic Graphics","Federal Republic of Germany","Form Requires Original Genius","Foundations of Revolutionary Design"],a:1,e:"The name frog is derived from 'Federal Republic of Germany,' Esslinger's home country."},
-  {q:"frog's original name?",o:["frog design","Esslinger Design","Black Forest Studio","Form + Function"],a:1,e:"The company started as 'Esslinger Design' before being renamed to 'frog design' in 1982."},
-  {q:"Where in Germany was frog founded?",o:["Bavaria","The Black Forest","The Rhineland","Berlin"],a:1,e:"Frog was founded in Mutlangen, in the Black Forest (Schwarzwald) region of Germany."},
-  {q:"Why is frog written in lowercase?",o:["A printing error that stuck","Democratic stance against German grammar rules","The founder preferred minimalism","Required by trademark law"],a:1,e:"The lowercase styling was a deliberate rebellion against German grammatical rules that capitalize all nouns, expressing frog's democratic workplace ethos."},
-  {q:"When did it rename to 'frog design'?",o:["1976","1979","1982","1985"],a:2,e:"The name changed to 'frog design' in 1982, the same year Esslinger signed his landmark contract with Apple."},
-  {q:"Where was Esslinger born?",o:["Munich","Beuren, Black Forest","Vienna","Stuttgart"],a:1,e:"Esslinger was born on June 5, 1944, in Beuren (Simmersfeld), in the Black Forest region of Germany."},
-  {q:"Where did Esslinger study design?",o:["Bauhaus Dessau","Royal College of Art","HfG Schwäbisch Gmünd","Parsons"],a:2,e:"Esslinger studied at the Hochschule fur Gestaltung Schwabisch Gmund, finishing his studies at age 25."},
-  {q:"Which magazine cover featured Esslinger in 1990?",o:["Time","Wired","BusinessWeek","Fortune"],a:2,e:"BusinessWeek featured Esslinger with the headline 'Rebel With A Cause' — he was the only living designer honored on that cover since Raymond Loewy in 1934."},
-  {q:"Esslinger's counter to 'form follows function'?",o:["Form follows feeling","Form follows emotion","Form follows the user","Form follows beauty"],a:1,e:"'Form follows emotion' was Esslinger's challenge to Louis Sullivan's functionalist motto, arguing that humans need deeper emotional meaning in product design."},
-  {q:"Who co-founded frog with Esslinger?",o:["Steve Jobs","Patricia Roller","Dieter Rams","Herbert Pfeifer"],a:1,e:"Patricia Roller co-founded the company with Esslinger and served as co-CEO until their retirement in 2006."},
-  {q:"When did Jobs and Esslinger first meet?",o:["1979","1980","1982","1984"],a:2,e:"Jobs and Esslinger first met in January 1982, beginning one of the most influential designer-CEO partnerships in tech history."},
-  {q:"Apple's design competition that frog won?",o:["Project Macintosh","Snow White","Project Renaissance","California Dream"],a:1,e:"The 'Snow White' design competition (named after the seven dwarves for seven product lines) ran from July 1982 to February 1983. Frog won over British firm BIB."},
-  {q:"frog's annual Apple contract value?",o:["$500K/year","$1M/year","$2M/year","$5M/year"],a:2,e:"Esslinger entered an exclusive contract with Apple worth approximately $2 million per year, a groundbreaking sum that signaled design's strategic value."},
-  {q:"Which frog Apple product won Time's Design of the Year?",o:["Macintosh 128K","Apple IIc","Apple Lisa","Apple IIe"],a:1,e:"The Apple IIc (1984) was voted Design of the Year by Time magazine and its original was later acquired by the Whitney Museum of Art."},
-  {q:"Snow White's signature visual feature?",o:["Colorful translucent plastics","Shallow grooves on light-colored enclosures","Brushed aluminum surfaces","Rounded corners with rubber grips"],a:1,e:"Snow White featured off-white or light gray colors with shallow grooves (2mm wide, 2mm deep, spaced 10mm apart) and zero-draft enclosures."},
-  {q:"What did Esslinger submit to win Snow White?",o:["A Macintosh scale model","The 'Red Book' of inspirations","A working Apple IIc prototype","A video presentation"],a:1,e:"Esslinger won by submitting the 'Red Book' — a binder of design inspirations drawn from Walt Disney cartoons and Sony Trinitron televisions."},
-  {q:"What did Esslinger do when Jobs left Apple?",o:["Stayed at Apple","Broke his contract and followed Jobs to NeXT","Returned to Germany","Joined IBM"],a:1,e:"In a remarkable show of loyalty, Esslinger broke his lucrative Apple contract and followed Jobs to design for NeXT Computer."},
-  {q:"How many product lines did Snow White cover?",o:["Three","Five","Seven","Ten"],a:2,e:"The competition required designs for seven product lines — hence the 'Snow White and the Seven Dwarfs' codename."},
-  {q:"What made the NeXT Computer's shape unique?",o:["Triangular","A perfect one-foot cube","The thinnest computer ever made","Completely spherical"],a:1,e:"The NeXT Computer was designed as a mathematically perfect cube, exactly one foot on each side — beautiful but a nightmare to manufacture."},
+  {q:"What does the acronym 'frog' stand for?",o:["Future Research in Organic Graphics","Federal Republic of Germany","Form Requires Original Genius","Foundations of Revolutionary Design"],a:1,e:"The name frog is derived from 'Federal Republic of Germany,' Esslinger's home country."},
+  {q:"What was frog originally named when it was founded?",o:["frog design","Esslinger Design","Black Forest Studio","Form + Function"],a:1,e:"The company started as 'Esslinger Design' before being renamed to 'frog design' in 1982."},
+  {q:"In which region of Germany was frog originally established?",o:["Bavaria","The Black Forest","The Rhineland","Berlin"],a:1,e:"Frog was founded in Mutlangen, in the Black Forest (Schwarzwald) region of Germany."},
+  {q:"Why is frog always written in lowercase?",o:["A printing error that stuck","Democratic stance against German grammar rules","The founder preferred minimalism","Required by trademark law"],a:1,e:"The lowercase styling was a deliberate rebellion against German grammatical rules that capitalize all nouns, expressing frog's democratic workplace ethos."},
+  {q:"In what year was the company renamed from 'Esslinger Design' to 'frog design'?",o:["1976","1979","1982","1985"],a:2,e:"The name changed to 'frog design' in 1982, the same year Esslinger signed his landmark contract with Apple."},
+  {q:"Where was Hartmut Esslinger born?",o:["Munich","Beuren, Black Forest","Vienna","Stuttgart"],a:1,e:"Esslinger was born on June 5, 1944, in Beuren (Simmersfeld), in the Black Forest region of Germany."},
+  {q:"What design school did Hartmut Esslinger attend?",o:["Bauhaus Dessau","Royal College of Art","HfG Schwäbisch Gmünd","Parsons"],a:2,e:"Esslinger studied at the Hochschule fur Gestaltung Schwabisch Gmund, finishing his studies at age 25."},
+  {q:"Esslinger was featured on the cover of which major magazine in December 1990?",o:["Time","Wired","BusinessWeek","Fortune"],a:2,e:"BusinessWeek featured Esslinger with the headline 'Rebel With A Cause' — he was the only living designer honored on that cover since Raymond Loewy in 1934."},
+  {q:"What famous phrase did Hartmut Esslinger coin to counter 'form follows function'?",o:["Form follows feeling","Form follows emotion","Form follows the user","Form follows beauty"],a:1,e:"'Form follows emotion' was Esslinger's challenge to Louis Sullivan's functionalist motto, arguing that humans need deeper emotional meaning in product design."},
+  {q:"Who co-founded frog alongside Hartmut Esslinger?",o:["Steve Jobs","Patricia Roller","Dieter Rams","Herbert Pfeifer"],a:1,e:"Patricia Roller co-founded the company with Esslinger and served as co-CEO until their retirement in 2006."},
+  {q:"In what year did Steve Jobs and Hartmut Esslinger first meet?",o:["1979","1980","1982","1984"],a:2,e:"Jobs and Esslinger first met in January 1982, beginning one of the most influential designer-CEO partnerships in tech history."},
+  {q:"What was the name of Apple's design competition that frog won?",o:["Project Macintosh","Snow White","Project Renaissance","California Dream"],a:1,e:"The 'Snow White' design competition (named after the seven dwarves for seven product lines) ran from July 1982 to February 1983. Frog won over British firm BIB."},
+  {q:"How much was frog's annual contract with Apple reportedly worth?",o:["$500K/year","$1M/year","$2M/year","$5M/year"],a:2,e:"Esslinger entered an exclusive contract with Apple worth approximately $2 million per year, a groundbreaking sum that signaled design's strategic value."},
+  {q:"What Apple product designed by frog was voted 'Design of the Year' by Time magazine?",o:["Macintosh 128K","Apple IIc","Apple Lisa","Apple IIe"],a:1,e:"The Apple IIc (1984) was voted Design of the Year by Time magazine and its original was later acquired by the Whitney Museum of Art."},
+  {q:"What were the characteristic visual features of the Snow White design language?",o:["Colorful translucent plastics","Shallow grooves on light-colored enclosures","Brushed aluminum surfaces","Rounded corners with rubber grips"],a:1,e:"Snow White featured off-white or light gray colors with shallow grooves (2mm wide, 2mm deep, spaced 10mm apart) and zero-draft enclosures."},
+  {q:"What did Esslinger submit to win the Snow White competition?",o:["A Macintosh scale model","The 'Red Book' of inspirations","A working Apple IIc prototype","A video presentation"],a:1,e:"Esslinger won by submitting the 'Red Book' — a binder of design inspirations drawn from Walt Disney cartoons and Sony Trinitron televisions."},
+  {q:"After Steve Jobs left Apple, what did Esslinger do?",o:["Stayed at Apple","Broke his contract and followed Jobs to NeXT","Returned to Germany","Joined IBM"],a:1,e:"In a remarkable show of loyalty, Esslinger broke his lucrative Apple contract and followed Jobs to design for NeXT Computer."},
+  {q:"How many product lines did Apple's Snow White competition require designs for?",o:["Three","Five","Seven","Ten"],a:2,e:"The competition required designs for seven product lines — hence the 'Snow White and the Seven Dwarfs' codename."},
+  {q:"What was unique about the NeXT Computer's physical form?",o:["Triangular","A perfect one-foot cube","The thinnest computer ever made","Completely spherical"],a:1,e:"The NeXT Computer was designed as a mathematically perfect cube, exactly one foot on each side — beautiful but a nightmare to manufacture."},
   {q:"What was frog's first major client?",o:["Apple","Sony","WEGA","Braun"],a:2,e:"WEGA, a German consumer electronics company, was frog's first major client. Frog designed their first color TV without a wood frame."},
-  {q:"Who acquired frog's client WEGA in 1974?",o:["Philips","Samsung","Sony","Panasonic"],a:2,e:"Sony acquired WEGA in 1974 and subsequently hired Esslinger to create a global design image, leading to work on 100+ Sony products."},
-  {q:"Nickname for the frog-designed SPARCstation 1?",o:["The Cube","The Pizza Box","The Slab","The Wedge"],a:1,e:"The SPARCstation 1's distinctive 3-inch height earned it the 'pizza box' nickname. It sold 120,000 units in its first 18 months."},
-  {q:"Name of frog's Yamaha motorcycle concept?",o:["The Dart","The Rana","The Wave","The Blade"],a:1,e:"'The Rana' — meaning 'frog' in Latin — was a clever nod to the company name. The prototype was later donated to SFMOMA."},
+  {q:"Which major electronics company acquired WEGA in 1974, leading to frog's international expansion?",o:["Philips","Samsung","Sony","Panasonic"],a:2,e:"Sony acquired WEGA in 1974 and subsequently hired Esslinger to create a global design image, leading to work on 100+ Sony products."},
+  {q:"What nickname was given to the Sun SPARCstation 1 designed by frog?",o:["The Cube","The Pizza Box","The Slab","The Wedge"],a:1,e:"The SPARCstation 1's distinctive 3-inch height earned it the 'pizza box' nickname. It sold 120,000 units in its first 18 months."},
+  {q:"What was the Yamaha FZ750 motorcycle concept designed by frog called?",o:["The Dart","The Rana","The Wave","The Blade"],a:1,e:"'The Rana' — meaning 'frog' in Latin — was a clever nod to the company name. The prototype was later donated to SFMOMA."},
   {q:"What Disney product did frog help design?",o:["Disney+ streaming interface","MagicBand wristband","Disneyland mobile app","Disney Infinity figures"],a:1,e:"Frog was the lead design partner for Disney's MagicBand and MyMagic+ system — an RFID bracelet connecting park tickets, hotel keys, payments, and PhotoPass."},
-  {q:"Which SAP product did frog redesign?",o:["SAP HANA","SAP Fiori","SAP SuccessFactors","SAP Ariba"],a:1,e:"Frog led the radically human-centered redesign of SAP Fiori, transforming SAP's flagship enterprise application."},
-  {q:"How many Sony products did frog design?",o:["About 25","About 50","Over 100","Over 200"],a:2,e:"Frog designed over 100 products for Sony, emphasizing high-tech minimalism and ergonomic appeal across their entire product range."},
-  {q:"Which museum holds the original Apple IIc?",o:["MoMA","The Smithsonian","Whitney Museum of Art","Cooper Hewitt"],a:2,e:"The original Apple IIc was acquired by the Whitney Museum of Art in New York, recognizing its significance as both technology and design."},
-  {q:"Which frog Apple product is in MoMA?",o:["Apple IIc","Macintosh SE","Apple Lisa","Power Mac G3"],a:1,e:"The Macintosh SE (1987, designed 1984) is part of MoMA's permanent collection in New York."},
+  {q:"What SAP product did frog help redesign with a human-centered approach?",o:["SAP HANA","SAP Fiori","SAP SuccessFactors","SAP Ariba"],a:1,e:"Frog led the radically human-centered redesign of SAP Fiori, transforming SAP's flagship enterprise application."},
+  {q:"Approximately how many Sony products did frog design during their partnership?",o:["About 25","About 50","Over 100","Over 200"],a:2,e:"Frog designed over 100 products for Sony, emphasizing high-tech minimalism and ergonomic appeal across their entire product range."},
+  {q:"Which museum acquired the original Apple IIc?",o:["MoMA","The Smithsonian","Whitney Museum of Art","Cooper Hewitt"],a:2,e:"The original Apple IIc was acquired by the Whitney Museum of Art in New York, recognizing its significance as both technology and design."},
+  {q:"Which frog-designed Apple product is in MoMA's permanent collection?",o:["Apple IIc","Macintosh SE","Apple Lisa","Power Mac G3"],a:1,e:"The Macintosh SE (1987, designed 1984) is part of MoMA's permanent collection in New York."},
   {q:"Who acquired frog from its founders in 2004?",o:["Capgemini","Accenture","Flextronics","McKinsey"],a:2,e:"Hartmut Esslinger and Patricia Roller sold their majority stake to Flextronics for approximately $25 million in 2004."},
-  {q:"Which PE firm acquired frog in 2006?",o:["Bain Capital","KKR","Blackstone","Carlyle Group"],a:1,e:"KKR (Kohlberg Kravis Roberts) acquired frog as part of their $900 million acquisition of Flextronics' software companies."},
-  {q:"Which consulting firm owns frog today?",o:["Deloitte","Accenture","Capgemini","McKinsey"],a:2,e:"Frog became part of Capgemini Invent in 2021, after Capgemini acquired Altran (which owned Aricent, which owned frog)."},
-  {q:"When did frog drop 'design' from its name?",o:["2005","2008","2011","2015"],a:2,e:"In 2011, the company dropped 'design' from its name to signify its expanded portfolio beyond design into strategy, services, and organization activation."},
+  {q:"Which private equity firm acquired frog as part of a $900 million deal in 2006?",o:["Bain Capital","KKR","Blackstone","Carlyle Group"],a:1,e:"KKR (Kohlberg Kravis Roberts) acquired frog as part of their $900 million acquisition of Flextronics' software companies."},
+  {q:"Frog is currently part of which global consulting firm?",o:["Deloitte","Accenture","Capgemini","McKinsey"],a:2,e:"Frog became part of Capgemini Invent in 2021, after Capgemini acquired Altran (which owned Aricent, which owned frog)."},
+  {q:"In what year did frog rebrand from 'frog design' to simply 'frog'?",o:["2005","2008","2011","2015"],a:2,e:"In 2011, the company dropped 'design' from its name to signify its expanded portfolio beyond design into strategy, services, and organization activation."},
   {q:"In what year did frog celebrate its 50th anniversary?",o:["2015","2017","2019","2021"],a:2,e:"Frog celebrated frog50 in 2019, commemorating its 1969 founding with traveling exhibitions featuring 50 iconic products."},
-  {q:"What was in frog's 50th anniversary exhibition?",o:["A documentary film","50 products & a 24-foot video wall","A redesigned website","A coffee table book"],a:1,e:"The frog50 exhibition featured 50 iconic products, a 24-foot-wide video wall with an animated timeline, and an AR wall with image-tracking."},
-  {q:"Who at Braun played the role Esslinger had at Apple?",o:["Charles Eames","Philippe Starck","Dieter Rams","Massimo Vignelli"],a:2,e:"Steve Jobs sought a 'world-class designer' similar to the role Dieter Rams played for Braun. Esslinger filled that role for Apple."},
-  {q:"Esslinger's formula for business success?",o:["Design + Engineering = Innovation","Culture + Process = Profits","Vision + Execution = Growth","Art + Science = Products"],a:1,e:"Esslinger's formula 'Culture + Process = Profits' encapsulates his belief that design-led culture drives business results."},
-  {q:"Which Sullivan principle did Esslinger challenge?",o:["Less is more","Form follows function","God is in the details","Ornament is crime"],a:1,e:"Esslinger challenged Sullivan's 'form follows function' with his own 'form follows emotion,' arguing that humans require deeper meaning in design."},
-  {q:"Esslinger's book about Apple?",o:["Designed by Apple","Keep It Simple","The Apple Way","Think Different"],a:1,e:"'Keep It Simple: The Early Design Years of Apple' was published in 2014 with 380 illustrations showing the step-by-step development of Apple's brand."},
-  {q:"Esslinger's book on design strategy?",o:["Design Thinking","A Fine Line","By Design","Creative Confidence"],a:1,e:"'A Fine Line: How Design Strategies Are Shaping the Future of Business' draws on Esslinger's 40+ years of experience building world-renowned brands."},
-  {q:"First award the Sony Trinitron ever won?",o:["A Grammy","An Emmy","An Oscar","A Golden Globe"],a:1,e:"The Sony Trinitron won an Emmy Award in 1973 — the first consumer electronics device ever to receive one."},
-  {q:"Why did Esslinger move frog to Silicon Valley?",o:["Lower taxes","Proximity to Apple","Better weather","Access to venture capital"],a:1,e:"Esslinger relocated to Palo Alto, California to be close to Apple, his most important client at the time."},
-  {q:"First living designer on BusinessWeek's cover?",o:["Henry Dreyfuss","Raymond Loewy","Walter Gropius","Charles Eames"],a:1,e:"Raymond Loewy was featured in 1934. It took 56 years before another living designer — Esslinger — received that honor in 1990."},
-  {q:"Which museum holds frog's Yamaha prototype?",o:["MoMA","Whitney Museum","SFMOMA","Design Museum London"],a:2,e:"The Yamaha FZ750 'The Rana' prototype was donated to SFMOMA's permanent collection in 2012."},
-  {q:"How many museums hold frog-designed objects?",o:["One","Two","Three","Four"],a:2,e:"At least three major museums hold frog designs: the Whitney (Apple IIc), MoMA (Macintosh SE), and SFMOMA (Yamaha 'The Rana')."},
-  {q:"School Esslinger co-founded in 1989?",o:["Bauhaus Weimar","HfG Karlsruhe","Royal College of Art","Domus Academy"],a:1,e:"Esslinger co-founded the Hochschule fur Gestaltung Karlsruhe in 1989, serving as founding professor."},
-  {q:"Where did Esslinger teach from 2005–2011?",o:["MIT","Stanford","University of Applied Arts Vienna","Parsons"],a:2,e:"Esslinger was Professor of Convergent Design at the University of Applied Arts Vienna, Austria from 2005 to 2011."},
-  {q:"What inspired Esslinger's Red Book for Apple?",o:["Bauhaus furniture & Swiss watches","Disney cartoons & Sony Trinitron TVs","Italian sports cars & Scandinavian furniture","Japanese gardens & German engineering"],a:1,e:"The Red Book contained design inspirations drawn from Walt Disney cartoons and Sony Trinitron televisions — an unexpected combination that won Jobs over."},
-  {q:"Each side of the NeXT cube measured?",o:["Eight inches","One foot","Eighteen inches","Two feet"],a:1,e:"The NeXT Computer was a mathematically perfect cube measuring exactly one foot (12 inches) on each side."},
-  {q:"frog's competitor in Snow White?",o:["Pentagram","BIB","Wolff Olins","Seymourpowell"],a:1,e:"BIB, a British design firm, was one of the two finalists alongside frog in Apple's Snow White competition."},
-  {q:"SPARCstation 1 sales in first 18 months?",o:["12,000","50,000","120,000","500,000"],a:2,e:"The SPARCstation 1 with its distinctive 'pizza box' design sold 120,000 units in its first 18 months — a remarkable success."},
+  {q:"What did frog's 50th anniversary exhibition feature?",o:["A documentary film","50 products & a 24-foot video wall","A redesigned website","A coffee table book"],a:1,e:"The frog50 exhibition featured 50 iconic products, a 24-foot-wide video wall with an animated timeline, and an AR wall with image-tracking."},
+  {q:"What famous designer played a similar role at Braun to what Esslinger played at Apple?",o:["Charles Eames","Philippe Starck","Dieter Rams","Massimo Vignelli"],a:2,e:"Steve Jobs sought a 'world-class designer' similar to the role Dieter Rams played for Braun. Esslinger filled that role for Apple."},
+  {q:"What formula did Esslinger propose for business success through design?",o:["Design + Engineering = Innovation","Culture + Process = Profits","Vision + Execution = Growth","Art + Science = Products"],a:1,e:"Esslinger's formula 'Culture + Process = Profits' encapsulates his belief that design-led culture drives business results."},
+  {q:"Which Louis Sullivan principle did Esslinger famously challenge?",o:["Less is more","Form follows function","God is in the details","Ornament is crime"],a:1,e:"Esslinger challenged Sullivan's 'form follows function' with his own 'form follows emotion,' arguing that humans require deeper meaning in design."},
+  {q:"What is the title of Esslinger's book about his work with Apple?",o:["Designed by Apple","Keep It Simple","The Apple Way","Think Different"],a:1,e:"'Keep It Simple: The Early Design Years of Apple' was published in 2014 with 380 illustrations showing the step-by-step development of Apple's brand."},
+  {q:"What is the title of Esslinger's book about design and business strategy?",o:["Design Thinking","A Fine Line","By Design","Creative Confidence"],a:1,e:"'A Fine Line: How Design Strategies Are Shaping the Future of Business' draws on Esslinger's 40+ years of experience building world-renowned brands."},
+  {q:"What award was the Sony Trinitron the first consumer electronics device to win?",o:["A Grammy","An Emmy","An Oscar","A Golden Globe"],a:1,e:"The Sony Trinitron won an Emmy Award in 1973 — the first consumer electronics device ever to receive one."},
+  {q:"Why did Esslinger move frog to Silicon Valley in the early 1980s?",o:["Lower taxes","Proximity to Apple","Better weather","Access to venture capital"],a:1,e:"Esslinger relocated to Palo Alto, California to be close to Apple, his most important client at the time."},
+  {q:"Since 1934, Esslinger was only the second living designer featured on the cover of BusinessWeek. Who was the first?",o:["Henry Dreyfuss","Raymond Loewy","Walter Gropius","Charles Eames"],a:1,e:"Raymond Loewy was featured in 1934. It took 56 years before another living designer — Esslinger — received that honor in 1990."},
+  {q:"Which museum received frog's Yamaha 'The Rana' motorcycle prototype?",o:["MoMA","Whitney Museum","SFMOMA","Design Museum London"],a:2,e:"The Yamaha FZ750 'The Rana' prototype was donated to SFMOMA's permanent collection in 2012."},
+  {q:"How many major museums hold frog-designed objects in their permanent collections?",o:["One","Two","Three","Four"],a:2,e:"At least three major museums hold frog designs: the Whitney (Apple IIc), MoMA (Macintosh SE), and SFMOMA (Yamaha 'The Rana')."},
+  {q:"Which design school did Esslinger co-found as a professor in 1989?",o:["Bauhaus Weimar","HfG Karlsruhe","Royal College of Art","Domus Academy"],a:1,e:"Esslinger co-founded the Hochschule fur Gestaltung Karlsruhe in 1989, serving as founding professor."},
+  {q:"At which university did Esslinger teach convergent design from 2005 to 2011?",o:["MIT","Stanford","University of Applied Arts Vienna","Parsons"],a:2,e:"Esslinger was Professor of Convergent Design at the University of Applied Arts Vienna, Austria from 2005 to 2011."},
+  {q:"What inspired the designs in Esslinger's winning 'Red Book' for Apple?",o:["Bauhaus furniture & Swiss watches","Disney cartoons & Sony Trinitron TVs","Italian sports cars & Scandinavian furniture","Japanese gardens & German engineering"],a:1,e:"The Red Book contained design inspirations drawn from Walt Disney cartoons and Sony Trinitron televisions — an unexpected combination that won Jobs over."},
+  {q:"The NeXT Computer cube was exactly how long on each side?",o:["Eight inches","One foot","Eighteen inches","Two feet"],a:1,e:"The NeXT Computer was a mathematically perfect cube measuring exactly one foot (12 inches) on each side."},
+  {q:"Which British firm was frog's main competitor in the Snow White design competition?",o:["Pentagram","BIB","Wolff Olins","Seymourpowell"],a:1,e:"BIB, a British design firm, was one of the two finalists alongside frog in Apple's Snow White competition."},
+  {q:"How many units did the frog-designed Sun SPARCstation 1 sell in its first 18 months?",o:["12,000","50,000","120,000","500,000"],a:2,e:"The SPARCstation 1 with its distinctive 'pizza box' design sold 120,000 units in its first 18 months — a remarkable success."},
   {q:"What year was the NeXT Computer unveiled?",o:["1986","1987","1988","1989"],a:2,e:"The NeXT Computer was unveiled on October 12, 1988, at a private gala in San Francisco."},
-  {q:"Which Capgemini division is frog in?",o:["Capgemini Engineering","Capgemini Invent","Capgemini Technology","Capgemini Digital"],a:1,e:"Frog operates within Capgemini Invent, the company's digital innovation, consulting, and transformation arm."},
-  {q:"Snow White's color palette?",o:["Jet black and chrome","Off-white (Fog) or light gray (Platinum)","Beige and brown","Navy blue and silver"],a:1,e:"Snow White featured light off-white called 'Fog' or light gray called 'Platinum' as its signature color palette."},
-  {q:"Flextronics' purchase price for frog?",o:["$10 million","$25 million","$50 million","$100 million"],a:1,e:"Flextronics acquired the majority stake in frog from its founders for approximately $25 million."},
-  {q:"Format of frog's 50th anniversary event?",o:["A TED conference","A traveling exhibition","A Super Bowl commercial","A product launch"],a:1,e:"The frog50 traveling exhibition was held in Munich, New York, San Francisco, and other cities, featuring the massive animated innovation timeline."},
+  {q:"What specific division of Capgemini does frog operate within?",o:["Capgemini Engineering","Capgemini Invent","Capgemini Technology","Capgemini Digital"],a:1,e:"Frog operates within Capgemini Invent, the company's digital innovation, consulting, and transformation arm."},
+  {q:"What color scheme defined Apple's Snow White design language?",o:["Jet black and chrome","Off-white (Fog) or light gray (Platinum)","Beige and brown","Navy blue and silver"],a:1,e:"Snow White featured light off-white called 'Fog' or light gray called 'Platinum' as its signature color palette."},
+  {q:"Approximately how much did Flextronics pay to acquire frog in 2004?",o:["$10 million","$25 million","$50 million","$100 million"],a:1,e:"Flextronics acquired the majority stake in frog from its founders for approximately $25 million."},
+  {q:"What type of event featured frog's 50th anniversary 24-foot video wall?",o:["A TED conference","A traveling exhibition","A Super Bowl commercial","A product launch"],a:1,e:"The frog50 traveling exhibition was held in Munich, New York, San Francisco, and other cities, featuring the massive animated innovation timeline."},
   {q:"What technology did the Disney MagicBand use?",o:["Bluetooth","NFC","RFID","GPS"],a:2,e:"The MagicBand used RFID technology to connect park tickets, hotel room keys, payments, and PhotoPass into a single wearable experience."},
-  {q:"Who co-designed the SPARCstation 1 with frog?",o:["Steve Wozniak","Andy Bechtolsheim","Bill Joy","James Gosling"],a:1,e:"Andy Bechtolsheim, co-founder of Sun Microsystems, was the system designer who worked with frog on the SPARCstation 1."},
-  {q:"frog's 2021 Red Dot medical device?",o:["GlucoTrack sensor","MeMed Key","Dexcom G7","Abbott FreeStyle"],a:1,e:"The MeMed Key — a rapid point-of-care device that distinguishes bacterial from viral infections in 15 minutes (down from 2 hours) — won the Red Dot Award for Product Design in 2021."},
-  {q:"MeMed Key's core innovation?",o:["Wireless glucose monitoring","Cutting infection test time from 2 hrs to 15 min","Real-time cancer screening","Portable MRI imaging"],a:1,e:"MeMed Key dramatically shortened infection diagnostics from ~2 hours to 15 minutes, helping clinicians prescribe antibiotics correctly and combat antimicrobial resistance."},
-  {q:"Which Turkish bank's super-app did frog design?",o:["Akbank","Garanti BBVA","Odeabank","Yapı Kredi"],a:2,e:"Frog designed Odeabank's Odea App — a super-app integrating banking, wealth management, robo-advisors, and trading — winning both the 2023 Red Dot Award and 2024 iF Award."},
-  {q:"Mexican fintech frog rebranded in 2022?",o:["Clip","Kueski","Konfío","Bitso"],a:2,e:"Frog rebranded Konfío, a $1.3B-valuation Mexican fintech serving 70,000+ businesses. The redesign drove a 40% increase in users for their flagship corporate credit card."},
-  {q:"UN partner for frog's HDX platform?",o:["UNICEF","UN OCHA","UNHCR","UNESCO"],a:1,e:"Frog worked with the UN Office for the Coordination of Humanitarian Affairs (OCHA) to build HDX — a platform used by 100,000+ users from 200+ locations to share crisis data, including during the Ebola outbreak and Nepal earthquake."},
-  {q:"frog's 2018 Red Dot Heatworks product?",o:["A solar-powered dishwasher","A tankless electric water heater","A smart HVAC controller","An induction cooktop"],a:1,e:"Frog designed the MODEL 3 by Heatworks — a 99% energy-efficient, internet-connected tankless electric water heater that cuts water heating costs by ~40%, winning the 2018 Red Dot Award."},
-  {q:"Italian bank frog redesigned branches for?",o:["UniCredit","Banca Monte dei Paschi","Intesa Sanpaolo","Mediobanca"],a:2,e:"Frog redesigned the branch experience for Intesa Sanpaolo using 60+ hours of interviews and 70 hours of collaborative workshops. 50 branches launched in 2015, with 1,000+ more to follow."},
-  {q:"Name of frog's startup investment arm?",o:["frogLabs","frogVentures","frogX","frogStudio"],a:1,e:"frogVentures was frog's co-creation and investment arm, backing startups like New Matter (3D printing), Heatworks (water heaters), and Kidaptive (adaptive learning), providing both design and equity partnerships."},
-  {q:"frog Shanghai's IDEA 2016 award-winning toy?",o:["Osmo Genius","Yibu Play","littleBits","Tegu Blocks"],a:1,e:"Yibu Play — born from frogLabs in Shanghai — combined a digital tablet app with five wooden sensor-embedded toys that sense light, sound, direction, wind, and temperature, winning top honors at the IDSA IDEA 2016 awards."},
-  {q:"Automaker frog helped with fleet decarbonization?",o:["Volkswagen Group","BMW","Volvo Group","Mercedes-Benz"],a:2,e:"Frog joined Capgemini and Microsoft to help the Volvo Group build a cloud data platform enabling connected services for truck fleet management and decarbonization goals."},
+  {q:"Who designed the Sun SPARCstation 1 alongside frog?",o:["Steve Wozniak","Andy Bechtolsheim","Bill Joy","James Gosling"],a:1,e:"Andy Bechtolsheim, co-founder of Sun Microsystems, was the system designer who worked with frog on the SPARCstation 1."},
+  {q:"What medical diagnostics device did frog design that won the 2021 Red Dot Award?",o:["GlucoTrack sensor","MeMed Key","Dexcom G7","Abbott FreeStyle"],a:1,e:"The MeMed Key — a rapid point-of-care device that distinguishes bacterial from viral infections in 15 minutes (down from 2 hours) — won the Red Dot Award for Product Design in 2021."},
+  {q:"What was the primary innovation of the MeMed Key device designed by frog?",o:["Wireless glucose monitoring","Cutting infection test time from 2 hrs to 15 min","Real-time cancer screening","Portable MRI imaging"],a:1,e:"MeMed Key dramatically shortened infection diagnostics from ~2 hours to 15 minutes, helping clinicians prescribe antibiotics correctly and combat antimicrobial resistance."},
+  {q:"What Turkish bank did frog design a super-app for, winning iF and Red Dot awards?",o:["Akbank","Garanti BBVA","Odeabank","Yapı Kredi"],a:2,e:"Frog designed Odeabank's Odea App — a super-app integrating banking, wealth management, robo-advisors, and trading — winning both the 2023 Red Dot Award and 2024 iF Award."},
+  {q:"What Mexican fintech did frog rebrand in 2022, winning Fast Company's Innovation by Design Award?",o:["Clip","Kueski","Konfío","Bitso"],a:2,e:"Frog rebranded Konfío, a $1.3B-valuation Mexican fintech serving 70,000+ businesses. The redesign drove a 40% increase in users for their flagship corporate credit card."},
+  {q:"What UN agency did frog partner with to build the Humanitarian Data Exchange (HDX) platform?",o:["UNICEF","UN OCHA","UNHCR","UNESCO"],a:1,e:"Frog worked with the UN Office for the Coordination of Humanitarian Affairs (OCHA) to build HDX — a platform used by 100,000+ users from 200+ locations to share crisis data, including during the Ebola outbreak and Nepal earthquake."},
+  {q:"What energy-efficient home appliance did frog design through frogVentures for Heatworks, winning a 2018 Red Dot Award?",o:["A solar-powered dishwasher","A tankless electric water heater","A smart HVAC controller","An induction cooktop"],a:1,e:"Frog designed the MODEL 3 by Heatworks — a 99% energy-efficient, internet-connected tankless electric water heater that cuts water heating costs by ~40%, winning the 2018 Red Dot Award."},
+  {q:"What Italian bank did frog redesign the branch experience for, rolling out across 1,000+ locations?",o:["UniCredit","Banca Monte dei Paschi","Intesa Sanpaolo","Mediobanca"],a:2,e:"Frog redesigned the branch experience for Intesa Sanpaolo using 60+ hours of interviews and 70 hours of collaborative workshops. 50 branches launched in 2015, with 1,000+ more to follow."},
+  {q:"What was the name of frog's venture design arm that co-created and invested in startups?",o:["frogLabs","frogVentures","frogX","frogStudio"],a:1,e:"frogVentures was frog's co-creation and investment arm, backing startups like New Matter (3D printing), Heatworks (water heaters), and Kidaptive (adaptive learning), providing both design and equity partnerships."},
+  {q:"What educational toy ecosystem did frog create from its Shanghai studio, winning an IDEA 2016 award?",o:["Osmo Genius","Yibu Play","littleBits","Tegu Blocks"],a:1,e:"Yibu Play — born from frogLabs in Shanghai — combined a digital tablet app with five wooden sensor-embedded toys that sense light, sound, direction, wind, and temperature, winning top honors at the IDSA IDEA 2016 awards."},
+  {q:"What global automaker did frog partner with alongside Capgemini and Microsoft to build a cloud data platform for fleet decarbonization?",o:["Volkswagen Group","BMW","Volvo Group","Mercedes-Benz"],a:2,e:"Frog joined Capgemini and Microsoft to help the Volvo Group build a cloud data platform enabling connected services for truck fleet management and decarbonization goals."},
 ];
 
 // ─── UTILITIES ─────────────────────────────────────────────────────────────
@@ -175,7 +174,7 @@ var S = {
   pBar:{position:"absolute",top:"0",left:"0",right:"0",height:"2px",background:"rgba(255,255,255,0.1)"},
   pFill:{height:"100%",background:"#fff",transition:"width 0.4s ease"},
   oRow:{display:"flex",alignItems:"baseline",gap:"20px",padding:"20px 0",borderBottom:"1px solid rgba(255,255,255,0.12)",cursor:"pointer",transition:"opacity 0.15s"},
-  oLtr:{fontFamily:sans,fontSize:"15px",fontWeight:"500",opacity:0.35,flexShrink:0,width:"24px"},
+  oLtr:{fontFamily:serif,fontSize:"20px",fontStyle:"italic",opacity:0.4,flexShrink:0,width:"24px"},
   oTxt:{fontFamily:sans,fontSize:"17px",fontWeight:"400",lineHeight:"1.5"},
   chip:{backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",background:"rgba(0,0,0,0.45)",padding:"8px 16px",fontSize:"13px",fontFamily:sans,fontWeight:"500",letterSpacing:"1px",textTransform:"uppercase"},
 };
@@ -204,16 +203,6 @@ function Trivium() {
     setFadeIn(false);
     setTimeout(function(){setScreen("playing"); setFadeIn(true);}, 200);
   }, []);
-
-  var resultRef = useRef(null);
-
-  useEffect(function() {
-    if (selected !== null && resultRef.current) {
-      setTimeout(function() {
-        resultRef.current.scrollIntoView({behavior:"smooth", block:"start"});
-      }, 60);
-    }
-  }, [selected]);
 
   var selectAnswer = function(idx) {
     if (selected !== null) return;
@@ -372,8 +361,9 @@ function Trivium() {
               "Ten questions. One legendary design company.", _h("br", null), "How well do you know frog?"),
             _h("button", {style:S.btnP,onClick:startGame,onMouseEnter:hoverP,onMouseLeave:unhoverP}, "PLAY"))),
       // QUESTION
-      screen === "playing" && questions[current] && _h("div", {style:Object.assign({},S.card,{})},
+      screen === "playing" && questions[current] && _h("div", {style:Object.assign({},S.card,{marginTop:"64px"})},
         _h("div", {style:S.pBar}, _h("div", {style:Object.assign({},S.pFill,{width:((current+1)/ROUND_SIZE*100)+"%"})})),
+        _h("div", {style:Object.assign({},S.label,{marginBottom:"24px"})}, "Question " + (current+1) + " of " + ROUND_SIZE),
         _h("h2", {style:Object.assign({},S.hd,{fontSize:"clamp(26px, 5vw, 36px)",margin:"0 0 32px",lineHeight:"1.25"})}, questions[current].q),
         _h("div", null, questions[current].o.map(function(opt, i) {
           var isSelected = selected === i;
@@ -392,7 +382,7 @@ function Trivium() {
             _h("span", {style:S.oLtr}, letters[i]),
             _h("span", {style:S.oTxt}, opt));
         })),
-        selected !== null && _h("div", {ref:resultRef, style:{marginTop:"32px"}},
+        selected !== null && _h("div", {style:{marginTop:"32px"}},
           _h("div", {style:{height:"1px",background:"rgba(255,255,255,0.12)",marginBottom:"28px"}}),
           _h("div", {style:{display:"flex",alignItems:"center",gap:"10px",marginBottom:"14px"}},
             selected === questions[current].a
@@ -428,15 +418,28 @@ function Trivium() {
           _h("p", {style:Object.assign({},S.body,{opacity:animatedScore>=score?0.7:0,maxWidth:"480px",marginLeft:"auto",marginRight:"auto",lineHeight:"1.7",
             transform:animatedScore>=score?"translateY(0)":"translateY(12px)",transition:"opacity 0.5s ease 0.4s, transform 0.5s ease 0.4s"})},
             getTierInfo(score).desc),
+          // Share button with fade-in
+          _h("div", {style:{marginTop:"36px",opacity:animatedScore>=score?1:0,transition:"opacity 0.5s ease 0.6s"}},
+            _h("button", {style:Object.assign({},S.btnS,{display:"inline-flex",alignItems:"center",gap:"10px",padding:"14px 36px"}),onClick:handleShare,onMouseEnter:hoverS,onMouseLeave:unhoverS},
+              _h("svg", {viewBox:"0 0 20 20",style:{width:"16px",height:"16px"},fill:"none",stroke:"currentColor",strokeWidth:"1.8",strokeLinecap:"round",strokeLinejoin:"round"},
+                _h("path", {d:"M15 7l-5-5-5 5"}),
+                _h("line", {x1:"10",y1:"2",x2:"10",y2:"14"}),
+                _h("path", {d:"M3 12v4a2 2 0 002 2h10a2 2 0 002-2v-4"})),
+              copied ? "Copied to clipboard!" : "Share result"))),
+        // Breakdown card
+        _h("div", {style:Object.assign({},S.card,{padding:"32px",marginBottom:"32px"})},
+          _h("div", {style:Object.assign({},S.label,{marginBottom:"20px"})}, "Breakdown"),
+          answers.map(function(a, i) {
+            return _h("div", {key:i, style:{display:"flex",gap:"16px",padding:"16px 0",borderBottom:i<answers.length-1?"1px solid rgba(255,255,255,0.08)":"none",alignItems:"baseline"}},
+              _h("span", {style:{fontFamily:serif,fontSize:"14px",fontStyle:"italic",color:a.correct?"#4ee601":"#fb6446",flexShrink:0,width:"20px"}}, i+1),
+              _h("div", null,
+                _h("div", {style:Object.assign({},S.body,{fontSize:"15px",marginBottom:"4px"})}, a.question.q),
+                !a.correct && _h("div", {style:{fontSize:"13px",opacity:0.5}}, "Answer: " + a.question.o[a.question.a])));
+          })),
         // Action buttons
-        _h("div", {style:{display:"flex",flexDirection:"column",alignItems:"center",gap:"12px",paddingBottom:"48px",width:"100%"}},
-          _h("button", {style:Object.assign({},S.btnP,{display:"inline-flex",alignItems:"center",gap:"10px",width:isMob?"100%":"auto",justifyContent:"center"}),onClick:handleShare,onMouseEnter:hoverP,onMouseLeave:unhoverP},
-            _h("svg", {viewBox:"0 0 20 20",style:{width:"16px",height:"16px"},fill:"none",stroke:"currentColor",strokeWidth:"1.8",strokeLinecap:"round",strokeLinejoin:"round"},
-              _h("path", {d:"M15 7l-5-5-5 5"}),
-              _h("line", {x1:"10",y1:"2",x2:"10",y2:"14"}),
-              _h("path", {d:"M3 12v4a2 2 0 002 2h10a2 2 0 002-2v-4"})),
-            copied ? "Copied!" : "Share result"),
-          _h("button", {style:Object.assign({},S.btnS,{width:isMob?"100%":"auto"}),onClick:startGame,onMouseEnter:hoverS,onMouseLeave:unhoverS}, "Play again"))))
+        _h("div", {style:{display:"flex",gap:"16px",justifyContent:"center",paddingBottom:"48px"}},
+          _h("button", {style:S.btnP,onClick:startGame,onMouseEnter:hoverP,onMouseLeave:unhoverP}, "Play again"),
+          _h("button", {style:S.btnS,onClick:goHome,onMouseEnter:hoverS,onMouseLeave:unhoverS}, "Home"))))
   );
 }
 
