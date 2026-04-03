@@ -276,7 +276,7 @@ function Trivium() {
   }, [screen, score]);
 
   var renderTierIcon = function(iconType) {
-    var svgProps = {viewBox:"0 0 120 120",xmlns:"http://www.w3.org/2000/svg",style:{width:"140px",height:"140px",display:"block",margin:"0 auto"}};
+    var svgProps = {viewBox:"0 0 120 120",xmlns:"http://www.w3.org/2000/svg",style:{width:"100px",height:"100px",display:"block",margin:"0 auto"}};
     var stk = {fill:"none",stroke:"rgba(255,255,255,0.85)",strokeWidth:"1.5",strokeLinecap:"round",strokeLinejoin:"round"};
     var dot = function(cx,cy,r){return _h("circle",{cx:String(cx),cy:String(cy),r:String(r||2.5),fill:"rgba(255,255,255,0.5)"})};
     // 10/10 — Trophy/Star: a five-pointed star inscribed in concentric circles with radiant lines
@@ -409,16 +409,16 @@ function Trivium() {
           _h("button", {style:Object.assign({},S.btnP,isMob?{width:"100%"}:{}),onClick:nextQuestion,onMouseEnter:hoverP,onMouseLeave:unhoverP},
             current+1 < ROUND_SIZE ? "Continue" : "See results"))),
       // RESULTS
-      screen === "results" && _h("div", {style:{maxWidth:"680px",width:"100%",marginTop:"64px"}},
+      screen === "results" && _h("div", {style:{maxWidth:"680px",width:"100%",marginTop:"24px"}},
         // Hero section
-        _h("div", {style:{textAlign:"center",marginBottom:"48px"}},
-          _h("div", {style:Object.assign({},S.label,{marginBottom:"32px"})}, "Final score"),
+        _h("div", {style:{textAlign:"center",marginBottom:"24px"}},
+          _h("div", {style:Object.assign({},S.label,{marginBottom:"16px"})}, "Final score"),
           // Icon
           _h("div", {style:{marginBottom:"16px",opacity:animatedScore>=score?1:0.3,transition:"opacity 0.6s ease"}},
             renderTierIcon(getTierInfo(score).icon)),
           // Score
           _h("div", {style:{display:"flex",alignItems:"baseline",justifyContent:"center",gap:"4px"}},
-            _h("span", {style:Object.assign({},S.hd,{fontSize:"clamp(72px, 18vw, 140px)",lineHeight:"1",fontWeight:"normal"})}, animatedScore),
+            _h("span", {style:Object.assign({},S.hd,{fontSize:"clamp(56px, 14vw, 100px)",lineHeight:"1",fontWeight:"normal"})}, animatedScore),
             _h("span", {style:Object.assign({},S.hd,{fontSize:"clamp(28px, 6vw, 48px)",opacity:0.3,fontWeight:"normal"})}, "/"+ROUND_SIZE)),
           // Tier title with fade-in
           _h("h2", {style:Object.assign({},S.hd,{fontSize:"clamp(24px, 5vw, 36px)",fontStyle:"italic",marginTop:"20px",marginBottom:"16px",
@@ -428,16 +428,8 @@ function Trivium() {
           _h("p", {style:Object.assign({},S.body,{opacity:animatedScore>=score?0.7:0,maxWidth:"480px",marginLeft:"auto",marginRight:"auto",lineHeight:"1.7",
             transform:animatedScore>=score?"translateY(0)":"translateY(12px)",transition:"opacity 0.5s ease 0.4s, transform 0.5s ease 0.4s"})},
             getTierInfo(score).desc),
-          // Share button with fade-in
-          _h("div", {style:{marginTop:"36px",opacity:animatedScore>=score?1:0,transition:"opacity 0.5s ease 0.6s"}},
-            _h("button", {style:Object.assign({},S.btnS,{display:"inline-flex",alignItems:"center",gap:"10px",padding:"14px 36px"}),onClick:handleShare,onMouseEnter:hoverS,onMouseLeave:unhoverS},
-              _h("svg", {viewBox:"0 0 20 20",style:{width:"16px",height:"16px"},fill:"none",stroke:"currentColor",strokeWidth:"1.8",strokeLinecap:"round",strokeLinejoin:"round"},
-                _h("path", {d:"M15 7l-5-5-5 5"}),
-                _h("line", {x1:"10",y1:"2",x2:"10",y2:"14"}),
-                _h("path", {d:"M3 12v4a2 2 0 002 2h10a2 2 0 002-2v-4"})),
-              copied ? "Copied to clipboard!" : "Share result"))),
         // Action buttons
-        _h("div", {style:{display:"flex",flexDirection:"column",alignItems:"center",gap:"12px",paddingBottom:"48px",width:"100%"}},
+        _h("div", {style:{display:"flex",flexDirection:"column",alignItems:"center",gap:"12px",paddingBottom:"24px",width:"100%"}},
           _h("button", {style:Object.assign({},S.btnP,{display:"inline-flex",alignItems:"center",gap:"10px",width:isMob?"100%":"auto",justifyContent:"center"}),onClick:handleShare,onMouseEnter:hoverP,onMouseLeave:unhoverP},
             _h("svg", {viewBox:"0 0 20 20",style:{width:"16px",height:"16px"},fill:"none",stroke:"currentColor",strokeWidth:"1.8",strokeLinecap:"round",strokeLinejoin:"round"},
               _h("path", {d:"M15 7l-5-5-5 5"}),
